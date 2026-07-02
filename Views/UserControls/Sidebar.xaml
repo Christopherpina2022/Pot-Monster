@@ -24,6 +24,6 @@
         <UserControls:TextInput x:Name="perPage" Grid.Row="3" Margin="5" Placeholder="Per Page (Optional)" FontStyle="Italic" PlaceholderColor="LightYellow"/>
         <UserControls:TextInput x:Name="startDate" Grid.Row="4" Margin="5" Placeholder="Start Date (Optional)" FontStyle="Italic" PlaceholderColor="LightYellow"/>
         <UserControls:TextInput x:Name="endDate" Grid.Row="5" Margin="5" Placeholder="End Date (Optional)" FontStyle="Italic" PlaceholderColor="LightYellow"/>
-        <CheckBox x:Name="btnYTD" Grid.Row= "6" Content="Year To Date" VerticalAlignment="Center" Checked="btnYTD_Checked" Unchecked="btnYTD_Unchecked" Focusable="False"/>
+        <CheckBox x:Name="btnYTD" Grid.Row= "6" FontSize="20" Content="Year To Date" VerticalContentAlignment="Center" HorizontalAlignment="Center" Checked="btnYTD_Checked" Unchecked="btnYTD_Unchecked" Focusable="False"/>
     </Grid>
 </UserControl>

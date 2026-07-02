@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:FGC_Stat_Analyzer_wpf"
         xmlns:UserControls="clr-namespace:FGC_Stat_Analyzer_wpf.Views.UserControls"
         mc:Ignorable="d"
-        Title="MainWindow" Height="600" Width="800">
+        Title="Pot Monster" Height="600" Width="800">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="40"/>
@@ -16,18 +16,17 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="35*"/>
             <ColumnDefinition Width="70*"/>
-            <ColumnDefinition Width="5*"/>
         </Grid.ColumnDefinitions>
-        <!-- Header Background -->
-        <Border Grid.Row="0" Background="DarkRed" Panel.ZIndex="-1" Grid.ColumnSpan="3"/>
+        
+        <!-- Header -->
+        <Border Grid.Row="0" Background="Gray" Panel.ZIndex="-1" Grid.ColumnSpan="2"/>
+        <UserControls:HeaderBar Grid.Row="0" Grid.ColumnSpan="2" />
 
-        <!-- Midpoint Background -->
-        <Border Grid.Row="1" Background="IndianRed" Panel.ZIndex="-1" Grid.ColumnSpan="3"/>
+        <!-- Midpoint -->
+        <Border Grid.Row="1" Background="LightGray" Panel.ZIndex="-1" Grid.ColumnSpan="2"/>
+        <UserControls:Sidebar Grid.Row="1" Background="DarkGray"/>
 
-        <!-- Footer Background -->
-        <Border Grid.Row="2" Background="DarkRed" Panel.ZIndex="-1" Grid.ColumnSpan="3"/>
-
-        <!-- Sidebar -->
-        <UserControls:Sidebar Grid.Row="1"/>
+        <!-- Footer -->
+        <Border Grid.Row="2" Background="Gray" Panel.ZIndex="-1" Grid.ColumnSpan="2"/>
     </Grid>
 </Window>
