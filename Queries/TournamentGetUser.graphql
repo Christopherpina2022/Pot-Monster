@@ -1,0 +1,26 @@
+query TournamentGetUser($tournamentName: String, $stateCode: String) {
+  tournaments(
+    query: {perPage: 2, sortBy: "startAt desc", filter: {name: $tournamentName, addrState: $stateCode}}
+  ) {
+    nodes {
+      name
+      events {
+        name
+        }
+        entrants {
+          nodes {
+            participants {
+              gamerTag
+              player {
+                user {
+                  name
+                  genderPronoun
+                  birthday
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }

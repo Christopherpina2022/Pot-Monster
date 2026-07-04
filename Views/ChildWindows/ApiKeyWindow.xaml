@@ -26,6 +26,6 @@
             <Button x:Name="cancelButton" Content="Cancel" Width="80" Margin="0,0,10,0" Click="cancelButton_Click"/>
             <Button x:Name="saveButton" Content="Save" Width="80" Click="saveButton_Click"/>
         </StackPanel>
-        <TextBlock x:Name="statusText" Grid.Row="3" Text="API Status: N/A" Foreground="{Binding }"/>
+        <TextBlock Panel.ZIndex="-1" x:Name="statusText" Grid.Row="3"/>
     </Grid>
 </Window>

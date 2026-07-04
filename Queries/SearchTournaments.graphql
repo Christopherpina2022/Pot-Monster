@@ -1,0 +1,14 @@
+query SearchTournaments($name: String, $stateCode: String) {
+  tournaments(query: {perPage: 10, filter: {name: $name, addrState: $stateCode}}) {
+    nodes {
+      name
+      slug
+      startAt
+      numAttendees
+      images {
+        type
+        url
+      }
+    }
+  }
+}

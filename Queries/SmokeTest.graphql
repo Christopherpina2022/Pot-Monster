@@ -1,0 +1,5 @@
+query SmokeTest {
+  currentUser {
+    id
+  }
+}

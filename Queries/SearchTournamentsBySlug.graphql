@@ -1,0 +1,12 @@
+query SearchTournamentsBySlug($slug: String!) {
+  tournament(slug: $slug) {
+    name
+    slug
+    startAt
+    numAttendees
+    images {
+      type
+      url
+    }
+  }
+}
