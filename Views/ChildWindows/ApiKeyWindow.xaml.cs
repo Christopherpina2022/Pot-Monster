@@ -1,11 +1,11 @@
 ﻿using FGC_Stat_Analyzer_wpf.Services;
-using System.Security;
 using System.Windows;
 
 namespace FGC_Stat_Analyzer_wpf.Views.ChildWindows
 {
     public partial class ApiKeyWindow : Window
     {
+        KeyManager keyManager = new KeyManager();
         public ApiKeyWindow()
         {
             InitializeComponent();
@@ -28,6 +28,7 @@ namespace FGC_Stat_Analyzer_wpf.Views.ChildWindows
             if (result.Success)
             {
                 statusText.Text = "API Key Succeeded!";
+                keyManager.SaveKey(apiBox.Password);
             }
             else 
             {
