@@ -6,9 +6,10 @@
              xmlns:local="clr-namespace:FGC_Stat_Analyzer_wpf.Views.UserControls"
              xmlns:UserControls="clr-namespace:FGC_Stat_Analyzer_wpf.Views.UserControls"
              mc:Ignorable="d" 
-             d:DesignHeight="400" d:DesignWidth="200">
+             d:DesignHeight="400" d:DesignWidth="300">
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="10*"/>
             <RowDefinition Height="10*"/>
             <RowDefinition Height="10*"/>
             <RowDefinition Height="10*"/>
@@ -19,11 +20,12 @@
             <RowDefinition Height="40*"/>
         </Grid.RowDefinitions>
         <ComboBox x:Name="optionCombo" Text="Placeholder" Margin="5" VerticalAlignment="Center" ItemsSource="{Binding optionCombo}" SelectedIndex="0" SelectionChanged="optionCombo_SelectionChanged" Focusable="False"/>
-        <UserControls:TextInput Grid.Row="1" Margin="5" Placeholder="Tournament Name"/>
-        <UserControls:TextInput Grid.Row="2" Margin="5" Placeholder="State Code"/>
+        <UserControls:TextInput x:Name="tournamentName" Grid.Row="1" Margin="5" Placeholder="Tournament Name"/>
+        <UserControls:TextInput x:Name="stateCode" Grid.Row="2" Margin="5" Placeholder="State Code"/>
         <UserControls:TextInput x:Name="perPage" Grid.Row="3" Margin="5" Placeholder="Per Page (Optional)" FontStyle="Italic" PlaceholderColor="LightYellow"/>
-        <UserControls:TextInput x:Name="startDate" Grid.Row="4" Margin="5" Placeholder="Start Date (Optional)" FontStyle="Italic" PlaceholderColor="LightYellow"/>
-        <UserControls:TextInput x:Name="endDate" Grid.Row="5" Margin="5" Placeholder="End Date (Optional)" FontStyle="Italic" PlaceholderColor="LightYellow"/>
-        <CheckBox x:Name="btnYTD" Grid.Row= "6" FontSize="20" Content="Year To Date" VerticalContentAlignment="Center" HorizontalAlignment="Center" Checked="btnYTD_Checked" Unchecked="btnYTD_Unchecked" Focusable="False"/>
+        <UserControls:DateSelection x:Name="startDate" Grid.Row="4" Label="Start Date:"/>
+        <UserControls:DateSelection x:Name="endDate" Grid.Row="5" Label="End Date:"/>
+        <CheckBox x:Name="btnYTD" Grid.Row= "6" FontSize="20" Content="Year To Date" VerticalContentAlignment="Center" HorizontalAlignment="Right" Checked="btnYTD_Checked" Unchecked="btnYTD_Unchecked" Focusable="False" Margin="10,0,10,0"/>
+        <Button x:Name="queryButton" Grid.Row="7" Width="80" Height="20" Content="Search" HorizontalAlignment="Right" Margin="10, 0, 10, 0" Click="queryButton_Click"/>
     </Grid>
 </UserControl>

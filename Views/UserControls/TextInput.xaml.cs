@@ -1,14 +1,14 @@
-﻿using System.Drawing;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 
 namespace FGC_Stat_Analyzer_wpf.Views.UserControls
 {
-    /// <summary>
-    /// Interaction logic for TextInput.xaml
-    /// </summary>
     public partial class TextInput : UserControl
     {
+        public string Value
+        {
+            get => txtInput.Text; set => txtInput.Text = value;
+        }
         public TextInput()
         {
             InitializeComponent();

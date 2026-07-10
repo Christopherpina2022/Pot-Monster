@@ -25,32 +25,40 @@ namespace FGC_Stat_Analyzer_wpf.Services
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", apiKey);
         }
 
-        public async Task<GraphQLResult> ExecuteAsync (string query, object? variables = null)
+        public async Task<GraphQLResult> ExecuteAsync (string query, Dictionary<string, object?> variables)
         {
-            // Create Request
-            var payload = new { query, variables };
-            string json = JsonSerializer.Serialize(payload);
-            var request = new HttpRequestMessage(HttpMethod.Post, "")
-            {
-                Content = new StringContent(json, Encoding.UTF8, "application/json")
-            };
-
-            // Attempt to send request then return with GraphQLResult class instance
             try
             {
-                HttpResponseMessage response = await _httpClient.SendAsync(request);
-                string responseBody = await response.Content.ReadAsStringAsync();
+                int page = 1;
+                while (true) {
+                    variables["page"] = page;
 
-                // Validate response
-                using var document = JsonDocument.Parse(responseBody);
-                bool hasErrors = document.RootElement.TryGetProperty("errors", out _);
+                    // Assemble Request
+                    var payload = new { query, variables };
+                    string json = JsonSerializer.Serialize(payload);
+                    var request = new HttpRequestMessage(HttpMethod.Post, "")
+                    {
+                        Content = new StringContent(json, Encoding.UTF8, "application/json")
+                    };
 
-                return new GraphQLResult
-                {
-                    Success = response.IsSuccessStatusCode && !hasErrors,
-                    Json = responseBody,
-                    ErrorMessage = "Authentication Failed"
-                };
+                    HttpResponseMessage response = await _httpClient.SendAsync(request);
+                    string responseBody = await response.Content.ReadAsStringAsync();
+
+                    // Validate response
+                    using var document = JsonDocument.Parse(responseBody);
+                    bool hasErrors = document.RootElement.TryGetProperty("errors", out _);
+
+                    // for now only return first result
+                    return new GraphQLResult
+                    {
+                        Success = response.IsSuccessStatusCode && !hasErrors,
+                        Json = responseBody,
+                        ErrorMessage = "Authentication Failed"
+                    };
+
+                    // parse JSON to determine if max page is reached
+                    //page++;
+                }
             }
             catch (Exception ex)
             {
