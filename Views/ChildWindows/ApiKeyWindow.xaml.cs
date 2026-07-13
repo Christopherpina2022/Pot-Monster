@@ -24,7 +24,7 @@ namespace FGC_Stat_Analyzer_wpf.Views.ChildWindows
             var client = new StartGgClient(apiBox.Password);
             var variables = new Dictionary<string, object?>();
 
-            GraphQLResult result = await client.ExecuteAsync(Queries.SmokeTest, variables);
+            GraphQLResult result = await client.ExecuteAsync(Queries.SmokeTest, variables, false);
 
             if (result.Success)
             {
@@ -33,7 +33,7 @@ namespace FGC_Stat_Analyzer_wpf.Views.ChildWindows
             }
             else 
             {
-                statusText.Text = result.ErrorMessage;
+                statusText.Text = "API Key Failed!";
             }
         }
     }

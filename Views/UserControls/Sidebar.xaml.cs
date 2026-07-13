@@ -1,21 +1,29 @@
-﻿using FGC_Stat_Analyzer_wpf.Services;
-using System.Security.Permissions;
+﻿using Accessibility;
+using FGC_Stat_Analyzer_wpf.Services;
 using System.Windows;
 using System.Windows.Controls;
 
 namespace FGC_Stat_Analyzer_wpf.Views.UserControls
 {
-    /// <summary>
-    /// Interaction logic for Sidebar.xaml
-    /// </summary>
     public partial class Sidebar : UserControl
     {
+        private readonly QueryManager _queryManager;
+        private ResultsDataGrid? _resultsDataGrid;
+
         public Sidebar()
         {
             InitializeComponent();
+
+            _queryManager = new QueryManager();
+
             optionCombo.Items.Add("Top 8");
             optionCombo.Items.Add("Attendee Headcount");
             optionCombo.Items.Add("Get Attendee Info");
+        }
+
+        public void Initialize(ResultsDataGrid resultsDataGrid)
+        {
+            _resultsDataGrid = resultsDataGrid;
         }
 
         private void clearOptionals(bool hidden)
@@ -64,39 +72,26 @@ namespace FGC_Stat_Analyzer_wpf.Views.UserControls
 
         private async void queryButton_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            // Setup client
-            string? key = new KeyManager().GetKey();
-            if (key == null)
-            {
-                MessageBox.Show("Please setup API key or 0Auth credentials before running query.");
-                return;
-            }
-            var client = new StartGgClient(key);
-            GraphQLResult result = new GraphQLResult();
-
+            // Construct variables, if any
             if (!constructVariables(out var variables, out var error))
             {
                 MessageBox.Show(error);
-                return;
             }
 
             // Run the query
             switch (optionCombo.SelectedItem.ToString())
             {
                 case "Top 8":
-                    result = await client.ExecuteAsync(Queries.TournamentTop8, variables);
-                    if (result.Success == false) { MessageBox.Show(result.Json); }
-                    return;
+                    var top8Results = await _queryManager.QueryTop8(variables);
+                    _resultsDataGrid?.DisplayTop8Results(top8Results);
+                    break;
                 case "Attendee Headcount":
-                    result = await client.ExecuteAsync(Queries.TournamentHeadCount, variables);
-                    if (result.Success == false) { MessageBox.Show(result.Json); }
-                    return;
+                    var HeadcountResults = await _queryManager.QueryHeadcount(variables);
+                    _resultsDataGrid?.DisplayHeadcountResults(HeadcountResults);
+                    break;
                 case "Get Attendee Info":
-                    result = await client.ExecuteAsync(Queries.TournamentGetUser, variables);
-                    if (result.Success == false) { MessageBox.Show(result.Json); }
                     return;
-            }
-            
+            } 
             
         }
 

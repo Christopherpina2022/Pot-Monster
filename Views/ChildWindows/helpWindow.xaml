@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FGC_Stat_Analyzer_wpf.Views.ChildWindows"
         mc:Ignorable="d"
-        Title="What is Pot Monster?" Height="300" Width="860">
+        Title="What is Pot Monster?" Height="300" Width="1020">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
@@ -28,17 +28,17 @@
         <!-- Instructions -->
         <TextBlock Grid.Row="2" FontWeight="Bold" FontStyle="Italic" Text="Instructions" FontSize="16" Margin="10, 0, 0, 0"/>
         <TextBlock Grid.Row="3" FontSize="14" Margin="20, 0, 0, 0">
-            Use the left toolbar to select what it is you want to look for from a tournament. 
+            Fill in the left sidebar your Tournament of choice along with it's state code and any optional parameters then hit 'submit'.
             <LineBreak />
             <Run FontStyle="Italic" Text="Do note that this app only supports US Tournaments (for now)." />
             <LineBreak />
             <Run FontWeight="Bold" Text="Types of queries:" />
             <LineBreak />
             <Run FontWeight="Bold" FontStyle="Italic" Text="Top 8:" />
-            <Run Text="Queries for how many times a user was in a top 8 position and what positions" />
+            <Run Text="How many times a user was in a top 8 position and what positions" />
             <LineBreak />
             <Run FontWeight="Bold" FontStyle="Italic" Text="Attendee Headcount:" />
-            <Run Text="Returns how many times an attendee has entered a tournament" />
+            <Run Text="How many times an attendee has entered a tournament series. no date time params will lookup every result it can find" />
             <LineBreak />
             <Run FontWeight="Bold" FontStyle="Italic" Text="Get Attendee Info:" />
             <Run Text="Searches the latest tournament attendee info to gather user Stream handle specific data (Name, Pronouns, etc)" />

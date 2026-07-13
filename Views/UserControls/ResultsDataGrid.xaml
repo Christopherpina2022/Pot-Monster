@@ -11,8 +11,8 @@
             <RowDefinition Height="20*"/>
             <RowDefinition Height="80*"/>
         </Grid.RowDefinitions>
-        <ComboBox x:Name="filterCombo"  Width="240" Margin="10,0,0,0" Height="30" HorizontalAlignment="Left"/>
-        <DataGrid x:Name="resultsTable" Grid.Row="1" AlternatingRowBackground="AntiqueWhite">
+        <ComboBox x:Name="filterCombo" Width="240" Margin="10,0,0,0" Height="30" HorizontalAlignment="Left" VerticalContentAlignment="Center" Focusable="False" SelectionChanged="filterCombo_SelectionChanged"/>
+        <DataGrid x:Name="resultsTable" Grid.Row="1" AlternatingRowBackground="AntiqueWhite" Focusable="False" IsReadOnly="True">
             
         </DataGrid>
     </Grid>

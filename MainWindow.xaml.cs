@@ -8,6 +8,8 @@ namespace FGC_Stat_Analyzer_wpf
         public MainWindow()
         {
             InitializeComponent();
+
+            sidebar.Initialize(resultsDataGrid);
         }
     }
 }
