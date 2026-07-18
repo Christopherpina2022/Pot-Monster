@@ -17,6 +17,13 @@ namespace FGC_Stat_Analyzer_wpf.Services
             public string GamerTag { get; set; } = "";
         }
 
+        public class AttendeeResult
+        {
+            public string GamerTag { get; set; } = "";
+            public string Pronouns { get; set; } = "";
+            public string Birthday { get; set; } = "";
+        }
+
         public List<Top8Result> ParseTop8(List<string> pages)
         {
             List<Top8Result> results = new List<Top8Result>();
@@ -101,6 +108,62 @@ namespace FGC_Stat_Analyzer_wpf.Services
                 }
             }
 
+            return results;
+        }
+
+        public Dictionary<string, List<AttendeeResult>> ParseAttendees(List<string> pages)
+        {
+            Dictionary<string, List<AttendeeResult>> results = new Dictionary<string, List<AttendeeResult>>();
+            results["Overall"] = new List<AttendeeResult>();
+
+            // Parse Data
+            foreach (string page in pages)
+            {
+                using JsonDocument document = JsonDocument.Parse(page);
+
+                // Read through JSON
+                JsonElement tournaments = document.RootElement.GetProperty("data").GetProperty("tournaments").GetProperty("nodes");
+                if (tournaments.GetArrayLength() == 0)
+                {
+                    return results;
+                }
+
+                // Only need the first result since query returns one value
+                JsonElement tournament = tournaments[0];
+                if(!tournament.TryGetProperty("events", out JsonElement events) || events.ValueKind != JsonValueKind.Array)
+                {
+                    continue;
+                }
+
+                foreach (JsonElement evt in events.EnumerateArray())
+                {
+                    JsonElement entrants = evt.GetProperty("entrants").GetProperty("nodes");
+
+                    foreach (JsonElement entrant in entrants.EnumerateArray()) {
+                        // Safely catch in case participants property is null
+                        if (!entrant.TryGetProperty("participants", out JsonElement participants) || participants.ValueKind == JsonValueKind.Null)
+                        {
+                            continue;
+                        }
+
+                        foreach (JsonElement participant in participants.EnumerateArray())
+                        {
+                            string gamerTag = participant.GetProperty("gamerTag").GetString() ?? "Unknown";
+
+                            JsonElement user = participant.GetProperty("player").GetProperty("user");
+                            string pronouns = user.GetProperty("genderPronoun").GetString() ?? "Unknown";
+                            string birthday = user.GetProperty("birthday").GetString() ?? "Unknown";
+
+                            results["overall"].Add(new AttendeeResult
+                            {
+                                GamerTag = gamerTag,
+                                Pronouns = pronouns,
+                                Birthday = birthday,
+                            });
+                        }
+                    }
+                }
+            }
             return results;
         }
     }

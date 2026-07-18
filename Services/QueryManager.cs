@@ -41,6 +41,7 @@ namespace FGC_Stat_Analyzer_wpf.Services
             // Return data to be used by UI
             return analytics;
         }
+
         public async Task<Dictionary<string, List<Analytics.HeadcountAnalytics>>> QueryHeadcount(Dictionary<string, object?> variables) 
         {
             // Execute Query
@@ -59,6 +60,23 @@ namespace FGC_Stat_Analyzer_wpf.Services
 
             // Return data to be used by UI
             return analytics;
+        }
+
+        public async Task<Dictionary<string, List<Parser.AttendeeResult>>> QueryAttendees(Dictionary<string, object?> variables)
+        {
+            // Execute Query
+            GraphQLResult result = await _client.ExecuteAsync(Queries.TournamentGetUser, variables, false);
+
+            if (!result.Success)
+            {
+                throw new Exception(result.ErrorMessage);
+            }
+
+            // Parse Query as a dictionary
+            Dictionary<string, List<Parser.AttendeeResult>> parsed = _parser.ParseAttendees(result.Json);
+
+            // Return data to be used by UI
+            return parsed;
         }
     }
 }

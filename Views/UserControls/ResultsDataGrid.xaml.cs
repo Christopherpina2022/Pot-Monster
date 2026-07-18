@@ -4,7 +4,7 @@ using System.Windows.Controls;
 
 namespace FGC_Stat_Analyzer_wpf.Views.UserControls
 {
-    public class Top8TableRow
+    internal class Top8TableRow
     {
         public string GamerTag { get; set; } = "";
         public int Top8Count { get; set; }
@@ -18,10 +18,17 @@ namespace FGC_Stat_Analyzer_wpf.Views.UserControls
         public int Eighth { get; set; }
     }
 
-    public class HeadcountTableRow
+    internal class HeadcountTableRow
     {
         public string GamerTag { get; set; } = "";
         public int HeadCount { get; set;}
+    }
+
+    internal class AttendeeTableRow
+    {
+        public string GamerTag { get; set; } = "";
+        public string Pronouns { get; set; } = "";
+        public string Birthday { get; set; } = "";
     }
 
     public partial class ResultsDataGrid : UserControl
@@ -80,6 +87,29 @@ namespace FGC_Stat_Analyzer_wpf.Views.UserControls
 
                 // Insert sorted descending by how many times player was in Top 8
                 currentResults[group.Key] = rows.OrderByDescending(x => x.HeadCount).ToList();
+            }
+
+            setupTable();
+        }
+
+        public void DisplayAttendeeResults(Dictionary<string, List<Parser.AttendeeResult>> results)
+        {
+            foreach (var group in results)
+            {
+                List<AttendeeTableRow> rows = new();
+
+                foreach (var player in group.Value)
+                {
+                    rows.Add(new AttendeeTableRow
+                    {
+                        GamerTag = player.GamerTag,
+                        Pronouns = player.Pronouns,
+                        Birthday = player.Birthday,
+                    });
+                }
+
+                // Insert sorted descending by how many times player was in Top 8
+                currentResults[group.Key] = rows.OrderByDescending(x => x.GamerTag).ToList();
             }
 
             setupTable();

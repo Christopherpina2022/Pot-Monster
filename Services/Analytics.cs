@@ -3,7 +3,7 @@ using static FGC_Stat_Analyzer_wpf.Services.Parser;
 
 namespace FGC_Stat_Analyzer_wpf.Services
 {
-    public  class Analytics
+    public class Analytics
     {
         public class Top8Analytics
         {
@@ -24,8 +24,8 @@ namespace FGC_Stat_Analyzer_wpf.Services
             Dictionary<string, Top8Analytics> overall = new();
             Dictionary<string, Dictionary<string, Top8Analytics>> byGame = new();
 
-            foreach (Top8Result result in parsedResults) 
-            { 
+            foreach (Top8Result result in parsedResults)
+            {
                 string game = result.Game;
                 string gamerTag = result.GamerTag;
                 int placement = result.Placement;
@@ -46,7 +46,7 @@ namespace FGC_Stat_Analyzer_wpf.Services
                 player.Placements[placement]++;
 
                 // Append data by game
-                if(!byGame.TryGetValue(game, out var gamePlayers))
+                if (!byGame.TryGetValue(game, out var gamePlayers))
                 {
                     gamePlayers = new Dictionary<string, Top8Analytics>();
                     byGame[game] = gamePlayers;
@@ -72,7 +72,7 @@ namespace FGC_Stat_Analyzer_wpf.Services
 
             results["Overall"] = overall.Values.ToList();
 
-            foreach ( var game in byGame)
+            foreach (var game in byGame)
             {
                 results[game.Key] = game.Value.Values.ToList();
             }

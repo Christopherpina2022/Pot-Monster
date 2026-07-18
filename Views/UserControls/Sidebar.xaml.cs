@@ -90,7 +90,9 @@ namespace FGC_Stat_Analyzer_wpf.Views.UserControls
                     _resultsDataGrid?.DisplayHeadcountResults(HeadcountResults);
                     break;
                 case "Get Attendee Info":
-                    return;
+                    var AttendeeResults = await _queryManager.QueryAttendees(variables);
+                    _resultsDataGrid?.DisplayAttendeeResults(AttendeeResults);
+                    break;
             } 
             
         }
