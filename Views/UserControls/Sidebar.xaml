@@ -9,23 +9,31 @@
              d:DesignHeight="400" d:DesignWidth="300">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="10*"/>
-            <RowDefinition Height="10*"/>
-            <RowDefinition Height="10*"/>
-            <RowDefinition Height="10*"/>
-            <RowDefinition Height="10*"/>
-            <RowDefinition Height="10*"/>
-            <RowDefinition Height="10*"/>
-            <RowDefinition Height="10*"/>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="35"/>
             <RowDefinition Height="40*"/>
         </Grid.RowDefinitions>
-        <ComboBox x:Name="optionCombo" Text="Placeholder" Margin="5" VerticalAlignment="Center" ItemsSource="{Binding optionCombo}" SelectedIndex="0" SelectionChanged="optionCombo_SelectionChanged" Focusable="False"/>
+        <ComboBox x:Name="optionCombo" Text="Placeholder" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Left" ItemsSource="{Binding optionCombo}" Width="150" SelectedIndex="0" SelectionChanged="optionCombo_SelectionChanged" Focusable="False"/>
+
+        <UserControls:TextInput x:Name="tournamentUrl" Grid.Row="1" Margin="5" Placeholder="Tournament URL"/>
+        <Label x:Name="testLabel" FontFamily="Arial" FontSize="15" Grid.Row="2" HorizontalAlignment="Left" Content="Please enter a URL before running a query."/>
+        <!-- 
         <UserControls:TextInput x:Name="tournamentName" Grid.Row="1" Margin="5" Placeholder="Tournament Name"/>
         <UserControls:TextInput x:Name="stateCode" Grid.Row="2" Margin="5" Placeholder="State Code"/>
         <UserControls:TextInput x:Name="perPage" Grid.Row="3" Margin="5" Placeholder="Per Page (Optional)" FontStyle="Italic" PlaceholderColor="LightYellow"/>
-        <UserControls:DateSelection x:Name="startDate" Grid.Row="4" Label="Start Date:"/>
-        <UserControls:DateSelection x:Name="endDate" Grid.Row="5" Label="End Date:"/>
-        <CheckBox x:Name="btnYTD" Grid.Row= "6" FontSize="20" Content="Year To Date" VerticalContentAlignment="Center" HorizontalAlignment="Right" Checked="btnYTD_Checked" Unchecked="btnYTD_Unchecked" Focusable="False" Margin="10,0,10,0"/>
-        <Button x:Name="queryButton" Grid.Row="7" Width="80" Height="20" Content="Search" HorizontalAlignment="Right" Margin="10, 0, 10, 0" Click="queryButton_Click" Focusable="False"/>
+        -->
+
+        <UserControls:DateSelection x:Name="startDate" Grid.Row="4" Label="Start Date:" HorizontalAlignment="Left" ValueChanged="startDate_ValueChanged"/>
+        <UserControls:DateSelection x:Name="endDate" Grid.Row="5" Label="End Date:" HorizontalAlignment="Left" ValueChanged="endDate_ValueChanged"/>
+        <CheckBox x:Name="btnYTD" Grid.Row= "6" FontSize="15" FontWeight="Bold" Content="Year To Date" VerticalContentAlignment="Center" HorizontalAlignment="Left" Checked="btnYTD_Checked" Unchecked="btnYTD_Unchecked" Focusable="False" Margin="10,0,10,0"/>
+
+        <Button x:Name="queryButton" Grid.Row="7" Width="90" Height="20" Content="Search" HorizontalAlignment="Left" Margin="10, 0, 10, 0" Click="queryButton_Click" Focusable="False"/>
+        
     </Grid>
 </UserControl>

@@ -1,0 +1,14 @@
+query SearchTournamentsByOwner($user: ID!) {
+  tournaments(query: {filter: {ownerId: $user}, perPage: 100}) {
+    nodes {
+      name
+      slug
+      startAt
+      numAttendees
+      images {
+        type
+        url
+      }
+    }
+  }
+}

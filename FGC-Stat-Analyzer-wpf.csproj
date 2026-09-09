@@ -10,25 +10,19 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Queries\SearchTournaments.graphql" />
-    <None Remove="Queries\SearchTournamentsBySlug.graphql" />
     <None Remove="Queries\SmokeTest.graphql" />
-    <None Remove="Queries\TournamentGetUser.graphql" />
     <None Remove="Queries\TournamentHeadCount.graphql" />
     <None Remove="Queries\TournamentTop8.graphql" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Queries\SearchTournaments.graphql">
+    <Content Include="Queries\SearchTournamentsByOwner.graphql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Queries\SearchTournamentsBySlug.graphql">
+    <Content Include="Queries\GetOwnerByTournamentSlug.graphql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Queries\SmokeTest.graphql">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Queries\TournamentGetUser.graphql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Queries\TournamentHeadCount.graphql">

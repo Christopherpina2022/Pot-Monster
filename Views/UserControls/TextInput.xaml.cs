@@ -5,6 +5,7 @@ namespace FGC_Stat_Analyzer_wpf.Views.UserControls
 {
     public partial class TextInput : UserControl
     {
+        public event EventHandler? ValueChanged;
         public string Value
         {
             get => txtInput.Text; set => txtInput.Text = value;
@@ -54,6 +55,8 @@ namespace FGC_Stat_Analyzer_wpf.Views.UserControls
             {
                 tbPlaceholder.Visibility = Visibility.Collapsed;
             }
+
+            ValueChanged?.Invoke(this, EventArgs.Empty);
         }
     }
 }

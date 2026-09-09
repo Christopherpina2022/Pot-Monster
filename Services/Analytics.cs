@@ -1,5 +1,4 @@
-﻿using System.Text.Json;
-using static FGC_Stat_Analyzer_wpf.Services.Parser;
+﻿using static FGC_Stat_Analyzer_wpf.Services.Parser;
 
 namespace FGC_Stat_Analyzer_wpf.Services
 {
@@ -16,6 +15,8 @@ namespace FGC_Stat_Analyzer_wpf.Services
         {
             public string GamerTag { get; set; } = "";
             public int HeadCount { get; set; }
+            public string Pronouns { get; set; } = "";
+            public string Birthday { get; set; } = "";
         }
 
         public Dictionary<string, List<Top8Analytics>> BuildTop8Analytics(List<Top8Result> parsedResults)
@@ -90,6 +91,8 @@ namespace FGC_Stat_Analyzer_wpf.Services
             {
                 string game = result.Game;
                 string gamerTag = result.GamerTag;
+                string pronouns = result.Pronouns;
+                string birthday = result.Birthday;
 
                 // Append overall data
                 if (!overall.TryGetValue(gamerTag, out HeadcountAnalytics? player))
@@ -97,6 +100,8 @@ namespace FGC_Stat_Analyzer_wpf.Services
                     player = new HeadcountAnalytics
                     {
                         GamerTag = gamerTag,
+                        Pronouns = pronouns,
+                        Birthday = birthday
                     };
 
                     overall[gamerTag] = player;

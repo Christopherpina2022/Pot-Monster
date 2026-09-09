@@ -7,31 +7,33 @@ namespace FGC_Stat_Analyzer_wpf.Views.UserControls
 {
     public partial class Sidebar : UserControl
     {
+        private bool tournamentEntered = false;
         private readonly QueryManager _queryManager;
         private ResultsDataGrid? _resultsDataGrid;
 
         public Sidebar()
         {
             InitializeComponent();
-
             _queryManager = new QueryManager();
 
             optionCombo.Items.Add("Top 8");
             optionCombo.Items.Add("Attendee Headcount");
-            optionCombo.Items.Add("Get Attendee Info");
         }
 
         public void Initialize(ResultsDataGrid resultsDataGrid)
         {
             _resultsDataGrid = resultsDataGrid;
+            tournamentUrl.ValueChanged += TournamentUrl_ValueChanged;
+            startDate.ValueChanged += startDate_ValueChanged;
+            endDate.ValueChanged += endDate_ValueChanged;
         }
 
         private void clearOptionals(bool hidden)
         {
             if (hidden)
             {
-                perPage.IsEnabled = false;
-                perPage.txtInput.Clear();
+                //perPage.IsEnabled = false;
+                //perPage.txtInput.Clear();
 
                 startDate.IsEnabled = false;
                 startDate.Value = null;
@@ -41,7 +43,7 @@ namespace FGC_Stat_Analyzer_wpf.Views.UserControls
             }
             else
             {
-                perPage.IsEnabled = true;
+                //perPage.IsEnabled = true;
                 startDate.IsEnabled = true;
                 endDate.IsEnabled = true;
             }
@@ -72,67 +74,114 @@ namespace FGC_Stat_Analyzer_wpf.Views.UserControls
 
         private async void queryButton_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            // Construct variables, if any
-            if (!constructVariables(out var variables, out var error))
+            // check if there was a tournament entered into the search
+            if (tournamentEntered == false)
             {
-                MessageBox.Show(error);
+                testLabel.Content = "Please enter a URL before running query.";
+                return;
+            }
+
+            DateTime today = DateTime.Today;
+            int daysSinceMonday = ((int)today.DayOfWeek + 6) % 7;
+
+            // default date range to current week
+            DateTime queryStartDate = today.AddDays(-daysSinceMonday);
+            DateTime queryEndDate = today.AddDays(6);
+
+            // Override will only apply if both dates are filled in form
+            if (startDate.Value != null && endDate.Value != null)
+            {
+                queryStartDate = startDate.Value.Value;
+                queryEndDate = endDate.Value.Value;
             }
 
             // Run the query
             switch (optionCombo.SelectedItem.ToString())
             {
                 case "Top 8":
-                    var top8Results = await _queryManager.QueryTop8(variables);
+                    Dictionary<string, List<Analytics.Top8Analytics>> top8Results = await _queryManager.QueryTop8(_queryManager.TournamentList, queryStartDate, queryEndDate);
                     _resultsDataGrid?.DisplayTop8Results(top8Results);
                     break;
                 case "Attendee Headcount":
-                    var HeadcountResults = await _queryManager.QueryHeadcount(variables);
+                    Dictionary<string, List<Analytics.HeadcountAnalytics>> HeadcountResults = await _queryManager.QueryHeadcount(_queryManager.TournamentList, queryStartDate, queryEndDate);
                     _resultsDataGrid?.DisplayHeadcountResults(HeadcountResults);
-                    break;
-                case "Get Attendee Info":
-                    var AttendeeResults = await _queryManager.QueryAttendees(variables);
-                    _resultsDataGrid?.DisplayAttendeeResults(AttendeeResults);
                     break;
             } 
             
         }
 
-        private bool constructVariables(out Dictionary<string, object?> variables, out string error)
+        private async void TournamentUrl_ValueChanged(object? sender, EventArgs e)
         {
-            variables = new Dictionary<string, object?>();
+            testLabel.Content = "Testing...";
 
-            // Data validation
-            if (string.IsNullOrEmpty(tournamentName.Value)) {
-                error = "tournament name is required.";
-                return false;
-            }
-
-            if (string.IsNullOrEmpty(stateCode.Value)) {
-                error = "State code is required.";
-                return false;
-            }
-
-            // Assign values to variables
-            variables["tournamentName"] = tournamentName.Value;
-            variables["stateCode"] = stateCode.Value;
-            variables["perPage"] = 25;
-
-            // Datetime values need to convert to Unix time for GraphQL
-            if (btnYTD.IsChecked == true)
+            // Check if box is empty
+            if (string.IsNullOrWhiteSpace(tournamentUrl.Value))
             {
-                DateTimeOffset queryStartDate = new DateTimeOffset(DateTime.Now.Year, 1, 1, 0, 0, 0, TimeSpan.Zero);
-                DateTimeOffset queryEndDate = new DateTimeOffset(DateTime.Now.Date);
-                variables["startDate"] = queryStartDate.ToUnixTimeSeconds();
-                variables["endDate"] = queryEndDate.ToUnixTimeSeconds();
-            }
-            else
-            {
-                variables["startDate"] = startDate.Value.HasValue ? new DateTimeOffset(startDate.Value.Value.ToUniversalTime()).ToUnixTimeSeconds() : null;
-                variables["endDate"] = endDate.Value.HasValue ? new DateTimeOffset(endDate.Value.Value.ToUniversalTime()).ToUnixTimeSeconds() : null;
+                testLabel.Content = "Error: Please enter a URL.";
+                tournamentEntered = false;
+                return;
             }
 
-            error = "";
-            return true;
+            // Run tournament query with submitted information
+            try
+            {
+                await _queryManager.QueryTournamentOwner(tournamentUrl.Value);
+                int tournamentCount = _queryManager.TournamentList.Count;
+
+                if (tournamentCount <=0)
+                {
+                    testLabel.Content = "Error: no results were found from tournament lookup.";
+                    tournamentEntered = false;
+                    return;
+                }
+                testLabel.Content = "Success! Found: " + tournamentCount + " Results.";
+                tournamentEntered = true;
+            }
+            catch
+            {
+                testLabel.Content = "Error: Invalid URL.";
+                tournamentEntered = false;
+            }
+        }
+
+        private void startDate_ValueChanged(object sender, EventArgs e)
+        {
+            // Compare to end date
+            if (startDate.Value == null)
+                return;
+
+            DateTime maxEndDate = startDate.Value.Value.AddYears(1);
+            DateTime today = DateTime.Today;
+
+            if (endDate.Value == null)
+            {
+                endDate.Value = today.AddDays(6);
+            }
+            if (endDate.Value.Value > maxEndDate)
+            {
+                endDate.Value = maxEndDate;
+            }  
+        }
+
+        private void endDate_ValueChanged(object sender, EventArgs e)
+        {
+            // compare to start date
+            if (endDate.Value == null)
+                return;
+
+            DateTime minStartDate = endDate.Value.Value.AddYears(-1);
+            DateTime today = DateTime.Today;
+            int daysSinceMonday = ((int)today.DayOfWeek + 6) % 7;
+
+            if (startDate.Value == null)
+            {
+                startDate.Value = today.AddDays(-daysSinceMonday);
+            }
+            if (startDate.Value.Value < minStartDate)
+            {
+                startDate.Value = minStartDate;
+            }
+            
         }
     }
 }

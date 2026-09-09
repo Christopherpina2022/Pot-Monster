@@ -1,9 +1,23 @@
-﻿using System.Text.Json;
+﻿using System.Drawing;
+using System.Printing;
+using System.Security.Policy;
+using System.Text.Json;
+using System.Windows;
 
 namespace FGC_Stat_Analyzer_wpf.Services
 {
     public class Parser
     {
+        public class OwnerResult
+        {
+            public string Name { get; set; } = "";
+            public string Slug { get; set; } = "";
+            public int StartAt { get; set; }
+            public int NumAttendees { get; set; }
+            public List<(string Type, string Url)> Images { get; set; } = new();
+
+        }
+
         public class Top8Result
         {
             public string Game { get; set; } = "";
@@ -15,155 +29,152 @@ namespace FGC_Stat_Analyzer_wpf.Services
         {
             public string Game { get; set; } = "";
             public string GamerTag { get; set; } = "";
-        }
-
-        public class AttendeeResult
-        {
-            public string GamerTag { get; set; } = "";
             public string Pronouns { get; set; } = "";
             public string Birthday { get; set; } = "";
         }
 
-        public List<Top8Result> ParseTop8(List<string> pages)
+        public string ParseOwner(string json)
         {
-            List<Top8Result> results = new List<Top8Result>();
-
             // Parse data
-            foreach (string page in pages)
-            {
-                using JsonDocument document = JsonDocument.Parse(page);
-
-                // Read through JSON
-                JsonElement tournaments = document.RootElement.GetProperty("data").GetProperty("tournaments").GetProperty("nodes");
-                foreach (JsonElement tournament in tournaments.EnumerateArray())
-                {
-                    JsonElement events = tournament.GetProperty("events");
-                    foreach (JsonElement evt in events.EnumerateArray())
-                    {
-                        string game = evt.GetProperty("videogame").GetProperty("name").GetString()!;
-                        JsonElement standings = evt.GetProperty("standings").GetProperty("nodes");
-                        foreach (JsonElement standing in standings.EnumerateArray())
-                        {
-                            // Safety catch in case player property is null
-                            if (!standing.TryGetProperty("player", out JsonElement player) || player.ValueKind == JsonValueKind.Null)
-                            {
-                                continue;
-                            }
-
-                            string gamerTag = standing.GetProperty("player").GetProperty("gamerTag").GetString() ?? "Unknown";
-                            int placement = standing.GetProperty("standing").GetInt32();
-
-                            results.Add(new Top8Result
-                            {
-                                Game = game,
-                                GamerTag = gamerTag,
-                                Placement = placement
-                            });
-                        }
-                    }
-                }
-            }
-            return results;
+            using JsonDocument document = JsonDocument.Parse(json);
+            return document.RootElement.GetProperty("data").GetProperty("tournament").GetProperty("owner").GetProperty("id").ToString(); ;
         }
 
-        public List<HeadcountResult> ParseHeadcount(List<string> pages)
+        public List<OwnerResult> ParseOwnerTournaments(string json) 
         {
-            List<HeadcountResult> results = new List<HeadcountResult>();
+            List<OwnerResult> results = new List<OwnerResult>();
 
-            // Parse Data
-            foreach (string page in pages) 
+            using JsonDocument document = JsonDocument.Parse(json);
+            JsonElement nodes = document.RootElement.GetProperty("data").GetProperty("tournaments").GetProperty("nodes");
+            foreach (JsonElement node in nodes.EnumerateArray())
             {
-                using JsonDocument document = JsonDocument.Parse(page);
-
-                // Read through JSON
-                JsonElement tournaments = document.RootElement.GetProperty("data").GetProperty("tournaments").GetProperty("nodes");
-
-                foreach (JsonElement tournament in tournaments.EnumerateArray())
+                if (!node.TryGetProperty("startAt", out JsonElement startAt) || startAt.ValueKind == JsonValueKind.Null)
                 {
-                    JsonElement events = tournament.GetProperty("events");
-                    foreach (JsonElement evt in events.EnumerateArray())
-                    {
-                        string game = evt.GetProperty("videogame").GetProperty("name").GetString()!;
-                        JsonElement entrants = evt.GetProperty("entrants").GetProperty("nodes");
-                        foreach(JsonElement entrant in entrants.EnumerateArray())
-                        {
-                            // Safely catch in case participants property is null
-                            if (!entrant.TryGetProperty("participants", out JsonElement participants) || participants.ValueKind == JsonValueKind.Null)
-                            {
-                                continue;
-                            }
-
-                            foreach (JsonElement participant in participants.EnumerateArray())
-                            {
-                                string gamerTag = participant.GetProperty("gamerTag").GetString() ?? "Unknown";
-
-                                results.Add(new HeadcountResult
-                                {
-                                    Game = game,
-                                    GamerTag = gamerTag
-                                });
-                            }
-                        }
-                    }
+                    continue;
                 }
-            }
-
-            return results;
-        }
-
-        public Dictionary<string, List<AttendeeResult>> ParseAttendees(List<string> pages)
-        {
-            Dictionary<string, List<AttendeeResult>> results = new Dictionary<string, List<AttendeeResult>>();
-            results["Overall"] = new List<AttendeeResult>();
-
-            // Parse Data
-            foreach (string page in pages)
-            {
-                using JsonDocument document = JsonDocument.Parse(page);
-
-                // Read through JSON
-                JsonElement tournaments = document.RootElement.GetProperty("data").GetProperty("tournaments").GetProperty("nodes");
-                if (tournaments.GetArrayLength() == 0)
-                {
-                    return results;
-                }
-
-                // Only need the first result since query returns one value
-                JsonElement tournament = tournaments[0];
-                if(!tournament.TryGetProperty("events", out JsonElement events) || events.ValueKind != JsonValueKind.Array)
+                if (!node.TryGetProperty("numAttendees", out JsonElement numAttendees) || numAttendees.ValueKind == JsonValueKind.Null)
                 {
                     continue;
                 }
 
-                foreach (JsonElement evt in events.EnumerateArray())
-                {
-                    JsonElement entrants = evt.GetProperty("entrants").GetProperty("nodes");
+                // Required values so no need to null validate
+                string name = node.GetProperty("name").GetString();
+                string slug = node.GetProperty("slug").GetString();
 
-                    foreach (JsonElement entrant in entrants.EnumerateArray()) {
-                        // Safely catch in case participants property is null
-                        if (!entrant.TryGetProperty("participants", out JsonElement participants) || participants.ValueKind == JsonValueKind.Null)
+                OwnerResult result = new OwnerResult
+                {
+                    Name = name,
+                    Slug = slug,
+                    StartAt = startAt.GetInt32(),
+                    NumAttendees = numAttendees.GetInt32()
+                };
+
+                JsonElement images = node.GetProperty("images");
+                foreach(JsonElement image in images.EnumerateArray())
+                {
+                    if (!image.TryGetProperty("type", out JsonElement type) || type.ValueKind == JsonValueKind.Null)
+                    {
+                        continue;
+                    }
+                    if (!image.TryGetProperty("url", out JsonElement url) || url.ValueKind == JsonValueKind.Null)
+                    {
+                        continue;
+                    };
+
+                    result.Images.Add((
+                        type.GetString()!,
+                        url.GetString()!
+                    ));
+                }
+                results.Add(result);
+            }
+            return results;
+        }
+
+        public List<Top8Result> ParseTop8(string json)
+        {
+            List<Top8Result> results = new List<Top8Result>();
+
+            using JsonDocument document = JsonDocument.Parse(json);
+
+            // Read through JSON
+            JsonElement events = document.RootElement.GetProperty("data").GetProperty("tournament").GetProperty("events");
+            foreach (JsonElement evt in events.EnumerateArray())
+            {
+                string game = evt.GetProperty("videogame").GetProperty("name").GetString()!;
+
+                JsonElement standings = evt.GetProperty("standings").GetProperty("nodes");
+                foreach (JsonElement standing in standings.EnumerateArray())
+                {
+                    
+                    JsonElement participants = standing.GetProperty("entrant").GetProperty("participants");
+                    foreach (JsonElement participant in participants.EnumerateArray())
+                    {
+                        // Safety catch in case player property is null
+                        JsonElement player = participant.GetProperty("player");
+                        if (player.ValueKind == JsonValueKind.Null)
+                        {
+                            continue;
+                        }
+                    
+                        string gamerTag = player.GetProperty("prefix").GetString() + " " + player.GetProperty("gamerTag").GetString();
+                        int placement = standing.GetProperty("placement").GetInt32();
+
+                        results.Add(new Top8Result
+                        {
+                            Game = game,
+                            GamerTag = gamerTag,
+                            Placement = placement
+                        });
+                    }
+                }
+            }
+
+            return results;
+        }
+
+        public List<HeadcountResult> ParseHeadcount(string json)
+        {
+            List<HeadcountResult> results = new List<HeadcountResult>();
+
+            using JsonDocument document = JsonDocument.Parse(json);
+
+            // Read through JSON
+            JsonElement events = document.RootElement.GetProperty("data").GetProperty("tournament").GetProperty("events");
+
+            foreach (JsonElement evt in events.EnumerateArray())
+            {
+                string game = evt.GetProperty("videogame").GetProperty("name").GetString()!;
+
+                JsonElement entrants = evt.GetProperty("entrants").GetProperty("nodes");
+                foreach (JsonElement entrant in entrants.EnumerateArray())
+                {
+                    foreach (JsonElement participant in entrant.GetProperty("participants").EnumerateArray())
+                    {
+                        // safety catch in case participant or user is null
+                        if (participant.ValueKind == JsonValueKind.Null || participant.GetProperty("user").ValueKind == JsonValueKind.Null)
                         {
                             continue;
                         }
 
-                        foreach (JsonElement participant in participants.EnumerateArray())
+                        string prefix = participant.GetProperty("prefix").GetString() ?? "";
+                        string gamerTagValue = participant.GetProperty("gamerTag").GetString() ?? "Unknown";
+                        string gamerTag = $"{prefix} {gamerTagValue}".Trim();
+
+                        string pronouns = participant.GetProperty("user").GetProperty("genderPronoun").GetString() ?? "";
+                        string birthday = participant.GetProperty("user").GetProperty("birthday").GetString() ?? "N/A";
+
+                        results.Add(new HeadcountResult
                         {
-                            string gamerTag = participant.GetProperty("gamerTag").GetString() ?? "Unknown";
-
-                            JsonElement user = participant.GetProperty("player").GetProperty("user");
-                            string pronouns = user.GetProperty("genderPronoun").GetString() ?? "Unknown";
-                            string birthday = user.GetProperty("birthday").GetString() ?? "Unknown";
-
-                            results["overall"].Add(new AttendeeResult
-                            {
-                                GamerTag = gamerTag,
-                                Pronouns = pronouns,
-                                Birthday = birthday,
-                            });
-                        }
-                    }
+                            Game = game,
+                            GamerTag = gamerTag,
+                            Pronouns = pronouns,
+                            Birthday = birthday,
+                        });
+                    }   
                 }
             }
+
             return results;
         }
     }

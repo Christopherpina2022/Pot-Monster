@@ -1,4 +1,5 @@
-﻿using FGC_Stat_Analyzer_wpf.Views.ChildWindows;
+﻿using FGC_Stat_Analyzer_wpf.Services;
+using FGC_Stat_Analyzer_wpf.Views.ChildWindows;
 using System.Windows;
 using System.Windows.Controls;
 

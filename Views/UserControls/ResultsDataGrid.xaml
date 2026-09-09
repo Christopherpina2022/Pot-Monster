@@ -8,10 +8,11 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="20*"/>
+            <RowDefinition Height="50"/>
             <RowDefinition Height="80*"/>
         </Grid.RowDefinitions>
-        <ComboBox x:Name="filterCombo" Width="240" Margin="10,0,0,0" Height="30" HorizontalAlignment="Left" VerticalContentAlignment="Center" Focusable="False" SelectionChanged="filterCombo_SelectionChanged"/>
+        
+        <ComboBox x:Name="filterCombo" Width="240" Margin="20,0,0,0" Height="30" HorizontalAlignment="Left" Focusable="False" SelectionChanged="filterCombo_SelectionChanged"/>
         <DataGrid x:Name="resultsTable" Grid.Row="1" AlternatingRowBackground="AntiqueWhite" Focusable="False" IsReadOnly="True">
             
         </DataGrid>

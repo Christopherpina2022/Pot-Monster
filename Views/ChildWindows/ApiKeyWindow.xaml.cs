@@ -22,9 +22,8 @@ namespace FGC_Stat_Analyzer_wpf.Views.ChildWindows
             statusText.Text = "Testing API Key...";
 
             var client = new StartGgClient(apiBox.Password);
-            var variables = new Dictionary<string, object?>();
 
-            GraphQLResult result = await client.ExecuteAsync(Queries.SmokeTest, variables, false);
+            GraphQLResult result = await client.ExecuteAsync(Queries.SmokeTest, string.Empty, string.Empty);
 
             if (result.Success)
             {

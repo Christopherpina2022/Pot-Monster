@@ -1,22 +1,20 @@
-query TournamentTop8($page: Int!, $perPage: Int!, $tournamentName: String!, $stateCode: String!, $startDate: Timestamp, $endDate: Timestamp) {
-  tournaments(
-    query: {perPage: $perPage, page: $page, filter: {name: $tournamentName, addrState: $stateCode, beforeDate: $endDate, afterDate: $startDate}, sortBy: "startAt desc"}
-  ) {
-    pageInfo {
-      totalPages
-    }
-    nodes {
-      events {
-        videogame {
-          name
-        }
-        standings(query: {perPage: 8}) {
-          nodes {
-            player {
-              gamerTag
+query TournamentTop8($tournamentSlug: String!) {
+  tournament(slug: $tournamentSlug) {
+    events {
+      videogame {
+        name
+      }
+      standings(query: {perPage: 8}) {
+        nodes {
+          entrant {
+            participants {
+              player {
+                  gamerTag
+                  prefix
+              }
             }
-            standing
           }
+          placement
         }
       }
     }

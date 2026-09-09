@@ -3,10 +3,9 @@
 public class Queries
 {
     public static string SmokeTest = Load("SmokeTest.graphql");
-    public static string SearchTournamentsBySlug = Load("SearchTournamentsBySlug.graphql");
-    public static string SearchTournaments = Load("SearchTournaments.graphql");
+    public static string GetOwnerByTournamentSlug = Load("GetOwnerByTournamentSlug.graphql");
     public static string TournamentHeadCount = Load("TournamentHeadCount.graphql");
-    public static string TournamentGetUser = Load("TournamentGetUser.graphql");
+    public static string SearchTournamentsByOwner = Load("SearchTournamentsByOwner.graphql");
     public static string TournamentTop8 = Load("TournamentTop8.graphql");
 
     private static string Load(string file)

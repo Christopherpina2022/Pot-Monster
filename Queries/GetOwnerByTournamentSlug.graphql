@@ -1,0 +1,7 @@
+query GetOwnerByTournamentSlug($slug: String!) {
+  tournament(slug: $slug) {
+    owner {
+      id
+    }
+  }
+}

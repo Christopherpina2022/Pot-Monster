@@ -11,8 +11,6 @@
             <MenuItem x:Name="helpMenu" Header="Help" FontSize="16" Click="helpMenu_Click" Focusable="False"/>
             <MenuItem Header="Profile" FontSize="16" Focusable="False">
                 <MenuItem x:Name="apiMenu" Header="Setup API Key" Click="apiMenu_Click"/>
-                <MenuItem x:Name="createMenu" Header="Make New Profile" />
-                <MenuItem x:Name="importMenu" Header="Import Profile"/>
             </MenuItem>
             <MenuItem Header="Table" FontSize="16" Focusable="False">
                 <MenuItem Header="Export as..." />

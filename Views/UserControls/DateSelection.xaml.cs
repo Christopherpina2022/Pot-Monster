@@ -5,6 +5,7 @@ namespace FGC_Stat_Analyzer_wpf.Views.UserControls
 {
     public partial class DateSelection : UserControl
     {
+        public event EventHandler? ValueChanged;
         public DateTime? Value
         {
             get => dateSelector.SelectedDate;
@@ -20,6 +21,11 @@ namespace FGC_Stat_Analyzer_wpf.Views.UserControls
         public DateSelection()
         {
             InitializeComponent();
+        }
+
+        private void dateSelector_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ValueChanged?.Invoke(this, EventArgs.Empty);
         }
     }
 }
