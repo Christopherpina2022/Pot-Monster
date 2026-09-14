@@ -1,5 +1,6 @@
 ﻿using Accessibility;
 using FGC_Stat_Analyzer_wpf.Services;
+using FGC_Stat_Analyzer_wpf.Views.ChildWindows;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -8,16 +9,42 @@ namespace FGC_Stat_Analyzer_wpf.Views.UserControls
     public partial class Sidebar : UserControl
     {
         private bool tournamentEntered = false;
-        private readonly QueryManager _queryManager;
+        private QueryManager? _queryManager;
+        private readonly KeyManager _keyManager;
         private ResultsDataGrid? _resultsDataGrid;
 
         public Sidebar()
         {
             InitializeComponent();
-            _queryManager = new QueryManager();
+            _keyManager = new KeyManager();
+            InitializeQueryManager();
+            
+
+            // Event handler for when API key is changed during runtime
+            ApiKeyWindow.ApiKeySaved += ApiKeyWindow_ApiKeySaved;
 
             optionCombo.Items.Add("Top 8");
             optionCombo.Items.Add("Attendee Headcount");
+        }
+
+        private void InitializeQueryManager()
+        {
+            string? apiKey = _keyManager.GetKey();
+
+            if (string.IsNullOrWhiteSpace(apiKey))
+            {
+                _queryManager = null;
+                testLabel.Content = "API Not found, please setup in 'Profile' on the menubar.";
+                return;
+            }
+
+            _queryManager = new QueryManager();
+            testLabel.Content = "API key ready.";
+        }
+
+        private void ApiKeyWindow_ApiKeySaved(object? sender, EventArgs e)
+        {
+            InitializeQueryManager();
         }
 
         public void Initialize(ResultsDataGrid resultsDataGrid)
@@ -32,9 +59,6 @@ namespace FGC_Stat_Analyzer_wpf.Views.UserControls
         {
             if (hidden)
             {
-                //perPage.IsEnabled = false;
-                //perPage.txtInput.Clear();
-
                 startDate.IsEnabled = false;
                 startDate.Value = null;
 
@@ -43,7 +67,6 @@ namespace FGC_Stat_Analyzer_wpf.Views.UserControls
             }
             else
             {
-                //perPage.IsEnabled = true;
                 startDate.IsEnabled = true;
                 endDate.IsEnabled = true;
             }
@@ -88,12 +111,19 @@ namespace FGC_Stat_Analyzer_wpf.Views.UserControls
             DateTime queryStartDate = today.AddDays(-daysSinceMonday);
             DateTime queryEndDate = today.AddDays(6);
 
-            // Override will only apply if both dates are filled in form
-            if (startDate.Value != null && endDate.Value != null)
+            // Overrides for time value
+            if (btnYTD.IsChecked == true)
+            {
+                queryStartDate = new DateTime(DateTime.Now.Year, 1, 1);
+                queryEndDate = DateTime.Now;
+            }
+            else if (startDate.Value != null && endDate.Value != null)
             {
                 queryStartDate = startDate.Value.Value;
                 queryEndDate = endDate.Value.Value;
             }
+
+            // TODO: start a scroller to show that the app is running the query in the foreground
 
             // Run the query
             switch (optionCombo.SelectedItem.ToString())

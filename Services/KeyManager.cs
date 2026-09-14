@@ -5,6 +5,7 @@ namespace FGC_Stat_Analyzer_wpf.Services
     public class KeyManager
     {
         private const string Target = "PotMonster.ApiKey";
+
         public void SaveKey(string apiKey)
         {
             var credential = new Credential

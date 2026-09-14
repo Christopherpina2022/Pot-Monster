@@ -28,7 +28,7 @@ namespace FGC_Stat_Analyzer_wpf.Views.UserControls
 
     public partial class ResultsDataGrid : UserControl
     {
-        private Dictionary<string, IEnumerable> currentResults = new();
+        public Dictionary<string, IEnumerable> CurrentResults { get; private set; } = new();
 
         public ResultsDataGrid()
         {
@@ -59,7 +59,7 @@ namespace FGC_Stat_Analyzer_wpf.Views.UserControls
                 }
 
                 // Insert sorted descending by how many times player was in Top 8
-                currentResults[group.Key] = rows.OrderByDescending(x => x.Top8Count).ToList();
+                CurrentResults[group.Key] = rows.OrderByDescending(x => x.Top8Count).ToList();
             }
 
             setupTable();
@@ -83,7 +83,7 @@ namespace FGC_Stat_Analyzer_wpf.Views.UserControls
                 }
 
                 // Insert sorted descending by how many times player was in Top 8
-                currentResults[group.Key] = rows.OrderByDescending(x => x.HeadCount).ToList();
+                CurrentResults[group.Key] = rows.OrderByDescending(x => x.HeadCount).ToList();
             }
 
             setupTable();
@@ -97,12 +97,12 @@ namespace FGC_Stat_Analyzer_wpf.Views.UserControls
             filterCombo.ItemsSource = null;
 
             // Setup the filter Combo box
-            filterCombo.ItemsSource = currentResults.Keys;
-            string? defaultSelection = currentResults.ContainsKey("Overall") ? "Overall" : currentResults.Keys.FirstOrDefault();
+            filterCombo.ItemsSource = CurrentResults.Keys;
+            string? defaultSelection = CurrentResults.ContainsKey("Overall") ? "Overall" : CurrentResults.Keys.FirstOrDefault();
 
             filterCombo.SelectedItem = defaultSelection;
 
-            if (defaultSelection != null && currentResults.TryGetValue(defaultSelection, out var data))
+            if (defaultSelection != null && CurrentResults.TryGetValue(defaultSelection, out var data))
             {
                 resultsTable.ItemsSource = data;
             }
@@ -110,7 +110,7 @@ namespace FGC_Stat_Analyzer_wpf.Views.UserControls
 
         private void filterCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (filterCombo.SelectedItem is string game && currentResults.TryGetValue(game, out var data))
+            if (filterCombo.SelectedItem is string game && CurrentResults.TryGetValue(game, out var data))
             {
                 resultsTable.ItemsSource = data;
             }
