@@ -13,9 +13,9 @@ namespace FGC_Stat_Analyzer_wpf.Views.UserControls
         private readonly KeyManager _keyManager;
         private ResultsDataGrid? _resultsDataGrid;
         private CancellationTokenSource? _searchCts;
-
         public Sidebar()
         {
+            
             InitializeComponent();
             _keyManager = new KeyManager();
             InitializeQueryManager();
@@ -36,7 +36,13 @@ namespace FGC_Stat_Analyzer_wpf.Views.UserControls
                 _queryManager = null;
                 // Run landing page for first time users
                 var landingPage = new LandingPage();
-                landingPage.Show();
+
+                landingPage.Loaded += (_, _) =>
+                {
+                    landingPage.Activate();
+                    landingPage.Focus();
+                };
+                landingPage.ShowDialog();
                 testLabel.Content = "API Not found, please setup in 'Profile' on the menubar.";
                 return;
             }

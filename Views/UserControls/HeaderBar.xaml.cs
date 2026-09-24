@@ -15,7 +15,11 @@ namespace FGC_Stat_Analyzer_wpf.Views.UserControls
         private void apiMenu_Click(object sender, RoutedEventArgs e)
         {
             // Create new window prompting for API Key
-            var apiWindow = new ApiKeyWindow();
+            var mainWindow = Window.GetWindow(this);
+            var apiWindow = new ApiKeyWindow
+            {
+                Owner = mainWindow,
+            };
             apiWindow.Show();
         }
 

@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:FGC_Stat_Analyzer_wpf.Views.ChildWindows"
         mc:Ignorable="d"
         Title="What is Pot Monster?" Height="425" Width="1020"
-        FontFamily="{StaticResource PixArial}">
+        FontFamily="{StaticResource PixArial}"
+        WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>

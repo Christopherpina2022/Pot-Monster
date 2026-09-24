@@ -14,7 +14,7 @@ namespace FGC_Stat_Analyzer_wpf.Views.ChildWindows
         private void APIButton_Click(object sender, RoutedEventArgs e)
         {
             var apiKeyWindow = new ApiKeyWindow();
-            apiKeyWindow.Show();
+            apiKeyWindow.ShowDialog();
             this.Close();
         }
 
