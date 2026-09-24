@@ -14,7 +14,7 @@
         </Grid.RowDefinitions>
         
         <ComboBox x:Name="filterCombo" Width="240" Height="30" HorizontalAlignment="Left" Focusable="False" SelectionChanged="filterCombo_SelectionChanged"/>
-        <DataGrid x:Name="resultsTable" Grid.Row="1" AlternatingRowBackground="HotPink" Focusable="False" IsReadOnly="True">
+        <DataGrid x:Name="resultsTable" Grid.Row="1" AlternatingRowBackground="BlanchedAlmond" Focusable="False" IsReadOnly="True">
             <DataGrid.CellStyle>
                 <Style TargetType="DataGridCell">
                     <Setter Property="Template">

@@ -8,7 +8,7 @@
              d:DesignHeight="450" d:DesignWidth="800"
              >
     <Grid Height="30">
-        <Menu VerticalAlignment="Center" FontFamily="{StaticResource AppFont}" Margin="10,0,10,0" Background="Transparent">
+        <Menu VerticalAlignment="Center" FontFamily="{StaticResource PixArial}" Margin="10,0,10,0" Background="Transparent">
             <MenuItem x:Name="helpMenu" Header="Help" FontSize="16" Click="helpMenu_Click" Focusable="False"/>
             <MenuItem Header="Profile" FontSize="16" Focusable="False">
                 <MenuItem x:Name="apiMenu" Header="Setup API Key" Click="apiMenu_Click"/>
