@@ -1,3 +1,5 @@
 <Solution>
-  <Project Path="FGC-Stat-Analyzer-wpf.csproj" />
+  <Project Path="FGC-Stat-Analyzer-wpf.csproj">
+    <BuildType Project="Debug" />
+  </Project>
 </Solution>

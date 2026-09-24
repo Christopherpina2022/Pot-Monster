@@ -13,6 +13,11 @@ namespace FGC_Stat_Analyzer_wpf.Views.UserControls
         public TextInput()
         {
             InitializeComponent();
+
+            tournamentListBox.Items.Add("Example 1");
+            tournamentListBox.Items.Add("Example 2");
+            tournamentListBox.Items.Add("Example 3");
+            searchPopup.IsOpen = true;
         }
 
         private System.Windows.Media.Brush placeholderColor = System.Windows.Media.Brushes.LightGray;
@@ -49,6 +54,7 @@ namespace FGC_Stat_Analyzer_wpf.Views.UserControls
         {
             if (string.IsNullOrEmpty(txtInput.Text))
             {
+                searchPopup.IsOpen = true;
                 tbPlaceholder.Visibility = Visibility.Visible;
             }
             else

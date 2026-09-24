@@ -37,16 +37,5 @@ namespace FGC_Stat_Analyzer_wpf.Services
                 return null;
             }   
         }
-
-        public void DeleteKey()
-        {
-            var credential = new Credential
-            {
-                Target = Target,
-                Type = CredentialType.Generic
-            };
-
-            credential.Delete();
-        }
     }
 }

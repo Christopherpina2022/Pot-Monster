@@ -91,6 +91,13 @@ namespace FGC_Stat_Analyzer_wpf.Services
             return results;
         }
 
+        public int ParseTotalPages(string json)
+        {
+            using JsonDocument document = JsonDocument.Parse(json);
+
+            return document.RootElement.GetProperty("data").GetProperty("tournaments").GetProperty("pageInfo").GetProperty("totalPages").GetInt32();
+        }
+
         public List<Top8Result> ParseTop8(string json)
         {
             List<Top8Result> results = new List<Top8Result>();

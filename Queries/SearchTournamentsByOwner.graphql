@@ -1,5 +1,5 @@
-query SearchTournamentsByOwner($user: ID!) {
-  tournaments(query: {filter: {ownerId: $user}, perPage: 100}) {
+query SearchTournamentsByOwner($user: ID!, $page: Int!) {
+  tournaments(query: {filter: {ownerId: $user}, page: $page, perPage: 200}) {
     nodes {
       name
       slug
@@ -9,6 +9,9 @@ query SearchTournamentsByOwner($user: ID!) {
         type
         url
       }
+    }
+    pageInfo {
+      totalPages
     }
   }
 }

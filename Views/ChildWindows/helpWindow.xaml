@@ -5,9 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FGC_Stat_Analyzer_wpf.Views.ChildWindows"
         mc:Ignorable="d"
-        Title="What is Pot Monster?" Height="300" Width="1020">
+        Title="What is Pot Monster?" Height="425" Width="1020"
+        FontFamily="{StaticResource PixArial}">
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
@@ -17,27 +22,46 @@
         <!-- About -->
         <TextBlock Grid.Row="0" FontWeight="Bold" FontStyle="Italic" Text="Pot Monster" FontSize="16" Margin="10,0,0,0"/>
         <TextBlock Grid.Row="1" FontSize="14" Margin="20,0,0,0">
-            <Run Text="A person that enters tournaments knowing they will lose early." />
+            <Run Text="A person that enters tournaments knowing they will lose early. It can act as either a harsh insult," />
             <LineBreak />
-            <Run Text="It can act as either a harsh insult, or a reminder that the statistics do not make the FGC;" />
+            <Run Text="or a reminder that the statistics do not make the FGC; it's the people who keep coming" />
             <LineBreak />
-            <Run Text="it's the people who keep coming back no matter how many"/>
+            <Run Text="back no matter how many"/>
             <Run x:Name="punchLine" />
+            <LineBreak />
         </TextBlock>
         
         <!-- Instructions -->
         <TextBlock Grid.Row="2" FontWeight="Bold" FontStyle="Italic" Text="Instructions" FontSize="16" Margin="10, 0, 0, 0"/>
         <TextBlock Grid.Row="3" FontSize="14" Margin="20, 0, 0, 0">
-            Paste the URL of your tournament from Start.gg and let Pot monster do the rest.
+            Paste a Start.gg tournament URL or use the lookup feature in the sidebar textbox to get your tournament of choice.
             <LineBreak />
-            <Run FontWeight="Bold" Text="Types of queries:" />
+            The date range defaults to the current week, but you can change it to gather up to one year of data.
             <LineBreak />
-            <Run FontWeight="Bold" FontStyle="Italic" Text="Top 8:" />
-            <Run Text="How many times a user was in a top 8 position and what positions" />
+        </TextBlock>
+        
+        <!-- Setting up the API key -->
+        <TextBlock Grid.Row="4" FontWeight="Bold" FontStyle="Italic" Text="Setting up the API key" FontSize="16" Margin="10, 0, 0, 0"/>
+        <TextBlock Grid.Row="5" FontSize="14" Margin="20, 0, 0, 0">
+            <Run FontWeight="Bold" Text="TODO: OAuth Method: "/>
+            <Run Text="Will be implemented at a later time due to start.gg's constraints with PKCE."/>
             <LineBreak />
-            <Run FontWeight="Bold" FontStyle="Italic" Text="Attendee Headcount:" />
-            <Run Text="How many times an attendee has entered a tournament series. no date time params will lookup every result it can find" />
+            <Run FontWeight="Bold" Text="Direct key method: " />
+            <Run Text="Follow developer.start.gg documentation to acquire key, then paste in 'setup API key'"/>
+            <LineBreak />  
+            <Run Text="Key will need to be reset every year as per start.gg's documentation."/>
             <LineBreak />
+        </TextBlock>
+
+        <!-- Types of Queries -->
+        <TextBlock Grid.Row="6" FontWeight="Bold" FontStyle="Italic" Text="Types of Queries" FontSize="16" Margin="10, 0, 0, 0"/>
+        <TextBlock Grid.Row="7" FontSize="14" Margin="20, 0, 0, 0">
+            <Run FontWeight="Bold" Text="Top 8: " />
+            <Run Text="Counts How many times a user was in a top 8 placement and what position they were in."/>
+            <LineBreak />
+            <Run FontWeight="Bold" Text="Attendee Headcount: " />
+            <Run Text="Gathers basic info (birthday, pronouns) about an entrant along with their attendance count."/>
+            <LineBreak />       
         </TextBlock>
     </Grid>
 </Window>

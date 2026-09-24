@@ -30,17 +30,41 @@ namespace FGC_Stat_Analyzer_wpf.Services
             // Clear the old tournament list
             TournamentList.Clear();
 
+            // construct variable dictionary
             string slug = ExtractSlug(url);
+            var ownerVariables = new Dictionary<string, object?>
+            {
+                { "slug", slug}
+            };
 
             // Run Query for tournament owner and return owner ID
-            GraphQLResult slugResult = await _client.ExecuteAsync(Queries.GetOwnerByTournamentSlug, "slug", slug);
+            GraphQLResult slugResult = await _client.ExecuteAsync(Queries.GetOwnerByTournamentSlug, ownerVariables);
+
+            // construct variable dictionary for ownerResult
+            int page = 1;
+            int totalPages;
             string ownerID = _parser.ParseOwner(slugResult.Json!);
+            
+            do
+            {
+                var resultVariables = new Dictionary<string, object?>
+                {
+                    { "user", ownerID },
+                    { "page", page },
+                };
+                
+                // Execute query
+                GraphQLResult ownerResult = await _client.ExecuteAsync(Queries.SearchTournamentsByOwner, resultVariables);
+                totalPages = _parser.ParseTotalPages(ownerResult.Json!);
 
-            // Run Query for tournaments owner has ran
-            GraphQLResult ownerResult = await _client.ExecuteAsync(Queries.SearchTournamentsByOwner, "user", ownerID);
+                // Parse current page
+                List<Parser.OwnerResult> tournaments = _parser.ParseOwnerTournaments(ownerResult.Json!);
 
-            // Append data to Tournament List
-            TournamentList = _parser.ParseOwnerTournaments(ownerResult.Json!);
+                TournamentList.AddRange(tournaments);
+
+                page++;
+            }
+            while (page <= totalPages);
         }
 
         private string ExtractSlug(string url)
@@ -93,7 +117,11 @@ namespace FGC_Stat_Analyzer_wpf.Services
             foreach (Parser.OwnerResult tournament in filteredTournaments)
             {
                 // Execute Query
-                GraphQLResult result = await _client.ExecuteAsync(Queries.TournamentTop8, "tournamentSlug", tournament.Slug);
+                var variables = new Dictionary<string, object?>
+                {
+                    {"tournamentSlug", tournament.Slug }
+                };
+                GraphQLResult result = await _client.ExecuteAsync(Queries.TournamentTop8, variables);
 
                 if (result.Success != true)
                 {
@@ -123,7 +151,12 @@ namespace FGC_Stat_Analyzer_wpf.Services
             foreach (Parser.OwnerResult tournament in filteredTournaments)
             {
                 // Execute Query
-                GraphQLResult result = await _client.ExecuteAsync(Queries.TournamentHeadCount, "tournamentSlug", tournament.Slug);
+                var variables = new Dictionary<string, object?>
+                {
+                    {"tournamentSlug", tournament.Slug }
+                };
+
+                GraphQLResult result = await _client.ExecuteAsync(Queries.TournamentHeadCount, variables);
 
                 if (!result.Success)
                 {

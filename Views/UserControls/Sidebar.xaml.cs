@@ -12,6 +12,7 @@ namespace FGC_Stat_Analyzer_wpf.Views.UserControls
         private QueryManager? _queryManager;
         private readonly KeyManager _keyManager;
         private ResultsDataGrid? _resultsDataGrid;
+        private CancellationTokenSource? _searchCts;
 
         public Sidebar()
         {
@@ -19,7 +20,6 @@ namespace FGC_Stat_Analyzer_wpf.Views.UserControls
             _keyManager = new KeyManager();
             InitializeQueryManager();
             
-
             // Event handler for when API key is changed during runtime
             ApiKeyWindow.ApiKeySaved += ApiKeyWindow_ApiKeySaved;
 
@@ -57,6 +57,7 @@ namespace FGC_Stat_Analyzer_wpf.Views.UserControls
 
         private void clearOptionals(bool hidden)
         {
+            // adjust visibility of optional form items
             if (hidden)
             {
                 startDate.IsEnabled = false;
@@ -82,17 +83,44 @@ namespace FGC_Stat_Analyzer_wpf.Views.UserControls
             clearOptionals(false);
         }
 
-        private void optionCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void startDate_ValueChanged(object sender, EventArgs e)
         {
-            if (optionCombo.SelectedItem.ToString() == "Get Attendee Info")
-            {
-                clearOptionals(true);
-            }
-            else if (btnYTD.IsChecked == true)
-            {
+            // Compare to end date
+            if (startDate.Value == null)
                 return;
+
+            DateTime maxEndDate = startDate.Value.Value.AddYears(1);
+            DateTime today = DateTime.Today;
+
+            if (endDate.Value == null)
+            {
+                endDate.Value = today.AddDays(6);
             }
-            else { clearOptionals(false); }
+            if (endDate.Value.Value > maxEndDate)
+            {
+                endDate.Value = maxEndDate;
+            }
+        }
+
+        private void endDate_ValueChanged(object sender, EventArgs e)
+        {
+            // compare to start date
+            if (endDate.Value == null)
+                return;
+
+            DateTime minStartDate = endDate.Value.Value.AddYears(-1);
+            DateTime today = DateTime.Today;
+            int daysSinceMonday = ((int)today.DayOfWeek + 6) % 7;
+
+            if (startDate.Value == null)
+            {
+                startDate.Value = today.AddDays(-daysSinceMonday);
+            }
+            if (startDate.Value.Value < minStartDate)
+            {
+                startDate.Value = minStartDate;
+            }
+
         }
 
         private async void queryButton_Click(object sender, System.Windows.RoutedEventArgs e)
@@ -142,76 +170,52 @@ namespace FGC_Stat_Analyzer_wpf.Views.UserControls
 
         private async void TournamentUrl_ValueChanged(object? sender, EventArgs e)
         {
-            testLabel.Content = "Testing...";
-
-            // Check if box is empty
+            // Check if text box is empty
             if (string.IsNullOrWhiteSpace(tournamentUrl.Value))
             {
-                testLabel.Content = "Error: Please enter a URL.";
                 tournamentEntered = false;
                 return;
             }
 
-            // Run tournament query with submitted information
+            // Setup debouncing to delay query
+            _searchCts?.Cancel();
+            _searchCts?.Dispose();
+            _searchCts = new CancellationTokenSource();
+
             try
             {
-                await _queryManager.QueryTournamentOwner(tournamentUrl.Value);
-                int tournamentCount = _queryManager.TournamentList.Count;
+                // delay will be 400 ms
+                await Task.Delay(400, _searchCts.Token);
 
-                if (tournamentCount <=0)
+                testLabel.Content = "Testing...";
+
+                // TODO: Determine if entered value is a URL, otherwise start search
+
+                // Run tournament query with submitted information
+                try
                 {
-                    testLabel.Content = "Error: no results were found from tournament lookup.";
-                    tournamentEntered = false;
-                    return;
+                    await _queryManager.QueryTournamentOwner(tournamentUrl.Value);
+                    int tournamentCount = _queryManager.TournamentList.Count;
+
+                    if (tournamentCount <= 0)
+                    {
+                        testLabel.Content = "Error: no results were found from tournament lookup.";
+                        tournamentEntered = false;
+                        return;
+                    }
+                    testLabel.Content = "Success! Found: " + tournamentCount + " Results.";
+                    tournamentEntered = true;
                 }
-                testLabel.Content = "Success! Found: " + tournamentCount + " Results.";
-                tournamentEntered = true;
+                catch
+                {
+                    testLabel.Content = "Error: provided value is not correct.";
+                    tournamentEntered = false;
+                }
             }
-            catch
+            catch (OperationCanceledException)
             {
-                testLabel.Content = "Error: Invalid URL.";
-                tournamentEntered = false;
-            }
-        }
-
-        private void startDate_ValueChanged(object sender, EventArgs e)
-        {
-            // Compare to end date
-            if (startDate.Value == null)
                 return;
-
-            DateTime maxEndDate = startDate.Value.Value.AddYears(1);
-            DateTime today = DateTime.Today;
-
-            if (endDate.Value == null)
-            {
-                endDate.Value = today.AddDays(6);
             }
-            if (endDate.Value.Value > maxEndDate)
-            {
-                endDate.Value = maxEndDate;
-            }  
-        }
-
-        private void endDate_ValueChanged(object sender, EventArgs e)
-        {
-            // compare to start date
-            if (endDate.Value == null)
-                return;
-
-            DateTime minStartDate = endDate.Value.Value.AddYears(-1);
-            DateTime today = DateTime.Today;
-            int daysSinceMonday = ((int)today.DayOfWeek + 6) % 7;
-
-            if (startDate.Value == null)
-            {
-                startDate.Value = today.AddDays(-daysSinceMonday);
-            }
-            if (startDate.Value.Value < minStartDate)
-            {
-                startDate.Value = minStartDate;
-            }
-            
         }
     }
 }

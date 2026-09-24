@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FGC_Stat_Analyzer_wpf.Views.ChildWindows"
         mc:Ignorable="d"
-        Title="Setup API Key" Height="175" Width="450">
+        Title="Setup API Key" Height="175" Width="450"
+        FontFamily="{StaticResource PixArial}">
     <Grid Margin="15">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>

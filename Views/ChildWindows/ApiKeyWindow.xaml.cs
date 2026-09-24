@@ -24,7 +24,7 @@ namespace FGC_Stat_Analyzer_wpf.Views.ChildWindows
 
             var client = new StartGgClient(apiBox.Password);
 
-            GraphQLResult result = await client.ExecuteAsync(Queries.SmokeTest, string.Empty, string.Empty);
+            GraphQLResult result = await client.ExecuteAsync(Queries.SmokeTest, null);
 
             if (result.Success)
             {

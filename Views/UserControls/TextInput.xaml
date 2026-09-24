@@ -5,10 +5,19 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:FGC_Stat_Analyzer_wpf.Views.UserControls"
              mc:Ignorable="d" 
-             d:DesignHeight="50" d:DesignWidth="200">
+             d:DesignHeight="35" d:DesignWidth="200">
     <Grid>
-        <TextBox x:Name="txtInput" FontSize="15" FontFamily="Arial" VerticalContentAlignment="Center" Background="Transparent" Foreground="{Binding PlaceholderColor}" BorderThickness="1" BorderBrush="Black" TextChanged="txtInput_TextChanged"/>
-        <TextBlock x:Name="tbPlaceholder" FontFamily="Arial" Panel.ZIndex="-1" FontSize="15" FontWeight="Light" Foreground="{Binding PlaceholderColor}" Text="{Binding Placeholder}" VerticalAlignment="Center" Margin="5,0,0,0"/>
+        <!--Text Input-->
+        <TextBox x:Name="txtInput" FontSize="15" VerticalContentAlignment="Center" Background="Transparent" Foreground="{Binding PlaceholderColor}" BorderThickness="1" BorderBrush="Black" TextChanged="txtInput_TextChanged"/>
+        <TextBlock x:Name="tbPlaceholder" Panel.ZIndex="-1" FontSize="15" FontWeight="Light" Foreground="{Binding PlaceholderColor}" Text="{Binding Placeholder}" VerticalAlignment="Center" Margin="5,0,0,0"/>
         <Button x:Name="btnClear"  HorizontalAlignment="Right" Width="40" Content="X" Background="LightCoral" Foreground="LightGray" BorderThickness=".5" Click="btnClear_Click" Focusable="False"/>
+        
+        <!--Combo Box-->
+        <Popup x:Name="searchPopup" PlacementTarget="{Binding ElementName=txtInput}" Placement="Bottom" StaysOpen="False" AllowsTransparency="True">
+            <Border Background="White" BorderBrush="Gray" BorderThickness="1">
+                <ListBox x:Name="tournamentListBox" Width="auto" FontSize="20" Padding="10"/>
+            </Border>
+        </Popup>
+        
     </Grid>
 </UserControl>

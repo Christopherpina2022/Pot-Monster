@@ -10,6 +10,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Fonts\m39.TTF" />
+    <None Remove="Fonts\PIXEARG_.TTF" />
     <None Remove="Queries\SmokeTest.graphql" />
     <None Remove="Queries\TournamentHeadCount.graphql" />
     <None Remove="Queries\TournamentTop8.graphql" />
@@ -35,6 +37,11 @@
 
   <ItemGroup>
     <PackageReference Include="CredentialManagement" Version="1.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Fonts\m39.TTF" />
+    <Resource Include="Fonts\PIXEARG_.TTF" />
   </ItemGroup>
 
 </Project>
