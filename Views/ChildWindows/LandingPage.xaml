@@ -27,7 +27,7 @@
         <TextBlock Grid.Row="1"  HorizontalAlignment="Center" TextAlignment="Center">
             <Run FontStyle="Italic" FontWeight="Bold">How to acquire an API key:</Run> <LineBreak />
             <Run>Go to </Run> 
-            <Hyperlink NavigateUri="https://start.gg/admin/profile/developer">This link </Hyperlink>
+            <Hyperlink NavigateUri="https://start.gg/admin/profile/developer" RequestNavigate="Hyperlink_RequestNavigate">This link </Hyperlink>
             <Run>and click on 'Create new token' in Personal Access Tokens.</Run> <LineBreak />   
             <Run FontWeight="Bold" Foreground="Red">NEVER SHARE YOUR API KEY WITH OTHER PEOPLE.</Run> <LineBreak />
         </TextBlock>
