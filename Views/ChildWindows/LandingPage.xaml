@@ -1,0 +1,47 @@
+﻿<Window x:Class="FGC_Stat_Analyzer_wpf.Views.ChildWindows.LandingPage"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FGC_Stat_Analyzer_wpf.Views.ChildWindows"
+        mc:Ignorable="d"
+        Title="LandingPage" Height="300" Width="700"
+        FontFamily="{StaticResource PixArial}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+
+        <!-- Welcome text -->
+        <TextBlock Grid.Row="0" FontStyle="Italic" HorizontalAlignment="Center" TextAlignment="Center">
+            <Run FontSize="22" FontWeight="Bold">Welcome to Pot Monster!</Run> <LineBreak />
+            <Run>Before you can use this app, you will need to have an API key setup or sign in with Oauth.</Run> <LineBreak />
+        </TextBlock>
+
+        <!-- Instructions for first time API key users -->
+        <TextBlock Grid.Row="1"  HorizontalAlignment="Center" TextAlignment="Center">
+            <Run FontStyle="Italic" FontWeight="Bold">How to acquire an API key:</Run> <LineBreak />
+            <Run>Go to </Run> 
+            <Hyperlink NavigateUri="https://start.gg/admin/profile/developer">This link </Hyperlink>
+            <Run>and click on 'Create new token' in Personal Access Tokens.</Run> <LineBreak />   
+            <Run FontWeight="Bold" Foreground="Red">NEVER SHARE YOUR API KEY WITH OTHER PEOPLE.</Run> <LineBreak />
+        </TextBlock>
+
+        <!-- Instructions for users with an API key already -->
+        <TextBlock Grid.Row="2" HorizontalAlignment="Center" TextAlignment="Center">
+            <Run>you can setup the API key or sign in with Oauth right here, but you can also</Run> <LineBreak />
+            <Run>change or redo setup under the 'profile' menubar option.</Run> <LineBreak />
+        </TextBlock>
+        
+        <!-- Buttons -->
+        <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10">
+            <Button x:Name="OAuthButton" Content="Setup OAuth" Width="120" Margin="0,0,10,0" Click="OAuthButton_Click" IsEnabled="False"/>
+            <Button x:Name="APIButton" Content="Setup API key" Width="120" Click="APIButton_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>

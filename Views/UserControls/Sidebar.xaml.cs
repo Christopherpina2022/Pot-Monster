@@ -34,6 +34,9 @@ namespace FGC_Stat_Analyzer_wpf.Views.UserControls
             if (string.IsNullOrWhiteSpace(apiKey))
             {
                 _queryManager = null;
+                // Run landing page for first time users
+                var landingPage = new LandingPage();
+                landingPage.Show();
                 testLabel.Content = "API Not found, please setup in 'Profile' on the menubar.";
                 return;
             }
@@ -125,13 +128,21 @@ namespace FGC_Stat_Analyzer_wpf.Views.UserControls
 
         private async void queryButton_Click(object sender, System.Windows.RoutedEventArgs e)
         {
+            // Fault check for no API key
+            string? apiKey = _keyManager.GetKey();
+            if (string.IsNullOrEmpty(apiKey))
+            {
+                testLabel.Content = "Please setup API key before entering.";
+                return;
+            }
+
             // check if there was a tournament entered into the search
             if (tournamentEntered == false)
             {
                 testLabel.Content = "Please enter a URL before running query.";
                 return;
             }
-
+            
             DateTime today = DateTime.Today;
             int daysSinceMonday = ((int)today.DayOfWeek + 6) % 7;
 
@@ -165,7 +176,6 @@ namespace FGC_Stat_Analyzer_wpf.Views.UserControls
                     _resultsDataGrid?.DisplayHeadcountResults(HeadcountResults);
                     break;
             } 
-            
         }
 
         private async void TournamentUrl_ValueChanged(object? sender, EventArgs e)
@@ -174,6 +184,14 @@ namespace FGC_Stat_Analyzer_wpf.Views.UserControls
             if (string.IsNullOrWhiteSpace(tournamentUrl.Value))
             {
                 tournamentEntered = false;
+                return;
+            }
+
+            // Fault check for no API key
+            string? apiKey = _keyManager.GetKey();
+            if (string.IsNullOrEmpty(apiKey))
+            {
+                testLabel.Content = "Please setup API key before entering.";
                 return;
             }
 
