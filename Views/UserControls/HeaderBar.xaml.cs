@@ -28,5 +28,12 @@ namespace FGC_Stat_Analyzer_wpf.Views.UserControls
             var helpWindow = new helpWindow();
             helpWindow.Show();
         }
+
+        private async void oauthMenu_Click(object sender, RoutedEventArgs e)
+        {
+            Window? window = Window.GetWindow(this);
+            var oauth = new StartGgOAuthService(window);
+            await oauth.AuthenticateAsync();
+        }
     }
 }

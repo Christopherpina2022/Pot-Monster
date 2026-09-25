@@ -12,6 +12,7 @@
             <MenuItem x:Name="helpMenu" Header="Help" FontSize="16" Click="helpMenu_Click" Focusable="False"/>
             <MenuItem Header="Profile" FontSize="16" Focusable="False">
                 <MenuItem x:Name="apiMenu" Header="Setup API Key" Click="apiMenu_Click"/>
+                <MenuItem x:Name="oauthMenu" Header="Sign into Oauth" Click="oauthMenu_Click" IsEnabled="False"/>
             </MenuItem>
             <MenuItem Header="Table" FontSize="16" Focusable="False">
                 <MenuItem Header="Export as..." />

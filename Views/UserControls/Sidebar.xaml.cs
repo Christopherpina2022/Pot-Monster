@@ -134,6 +134,13 @@ namespace FGC_Stat_Analyzer_wpf.Views.UserControls
 
         private async void queryButton_Click(object sender, System.Windows.RoutedEventArgs e)
         {
+            toggleInput(false);
+
+            // Clear the data on the table if there is any
+            
+
+            // TODO: start a scroller to show that the app is running the query in the foreground
+
             // Fault check for no API key
             string? apiKey = _keyManager.GetKey();
             if (string.IsNullOrEmpty(apiKey))
@@ -168,20 +175,49 @@ namespace FGC_Stat_Analyzer_wpf.Views.UserControls
                 queryEndDate = endDate.Value.Value;
             }
 
-            // TODO: start a scroller to show that the app is running the query in the foreground
-
             // Run the query
             switch (optionCombo.SelectedItem.ToString())
             {
                 case "Top 8":
                     Dictionary<string, List<Analytics.Top8Analytics>> top8Results = await _queryManager.QueryTop8(_queryManager.TournamentList, queryStartDate, queryEndDate);
                     _resultsDataGrid?.DisplayTop8Results(top8Results);
+                    toggleInput(true);
                     break;
                 case "Attendee Headcount":
                     Dictionary<string, List<Analytics.HeadcountAnalytics>> HeadcountResults = await _queryManager.QueryHeadcount(_queryManager.TournamentList, queryStartDate, queryEndDate);
                     _resultsDataGrid?.DisplayHeadcountResults(HeadcountResults);
+                    toggleInput(true);
                     break;
             } 
+        }
+
+        private void toggleInput(bool isEnabled)
+        {
+            // Controls functionality of sidebar elements
+            optionCombo.IsEnabled = isEnabled;
+            tournamentUrl.IsEnabled = isEnabled;  
+            if (btnYTD.IsChecked != true)
+            { 
+                startDate.IsEnabled = isEnabled;
+                endDate.IsEnabled = isEnabled;
+            }
+            btnYTD.IsEnabled = isEnabled;
+            queryButton.IsEnabled = isEnabled;
+            testLabel.IsEnabled = isEnabled;
+
+            // Controls opacity of datagrid and sidebar
+            if (!isEnabled)
+            {
+                _resultsDataGrid?.Opacity = .5;
+                optionCombo.Opacity = .5;
+                btnYTD.Opacity = .5;
+            }
+            else
+            {
+                _resultsDataGrid?.Opacity = 1;
+                optionCombo.Opacity = 1;
+                btnYTD.Opacity = 1;
+            }
         }
 
         private async void TournamentUrl_ValueChanged(object? sender, EventArgs e)
