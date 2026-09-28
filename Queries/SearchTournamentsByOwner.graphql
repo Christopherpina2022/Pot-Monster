@@ -2,9 +2,8 @@ query SearchTournamentsByOwner($user: ID!, $page: Int!) {
   tournaments(query: {filter: {ownerId: $user}, page: $page, perPage: 200}) {
     nodes {
       name
-      slug
       startAt
-      numAttendees
+      slug
       images {
         type
         url

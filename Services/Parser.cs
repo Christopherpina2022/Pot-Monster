@@ -8,12 +8,17 @@ namespace FGC_Stat_Analyzer_wpf.Services
 {
     public class Parser
     {
+        public class NameResult
+        {
+            public string Name { get; set; } = "";
+            public string Slug { get; set; } = "";
+            public List<(string Type, string Url)> Images { get; set; } = new();
+        }
         public class OwnerResult
         {
             public string Name { get; set; } = "";
             public string Slug { get; set; } = "";
             public int StartAt { get; set; }
-            public int NumAttendees { get; set; }
             public List<(string Type, string Url)> Images { get; set; } = new();
 
         }
@@ -31,6 +36,47 @@ namespace FGC_Stat_Analyzer_wpf.Services
             public string GamerTag { get; set; } = "";
             public string Pronouns { get; set; } = "";
             public string Birthday { get; set; } = "";
+        }
+
+        public List<NameResult> ParseLookup(string json)
+        {
+            List<NameResult> results = new List<NameResult>();
+
+            using JsonDocument document = JsonDocument.Parse(json);
+            JsonElement nodes = document.RootElement.GetProperty("data").GetProperty("tournaments").GetProperty("nodes");
+            foreach (JsonElement node in nodes.EnumerateArray()) 
+            {
+                // Required values so no need to null validate
+                string name = node.GetProperty("name").GetString();
+                string slug = node.GetProperty("slug").GetString();
+
+                NameResult nameResult = new NameResult
+                {
+                    Name = name,
+                    Slug = slug,
+                };
+
+                JsonElement images = node.GetProperty("images");
+                foreach (JsonElement image in images.EnumerateArray())
+                {
+                    if (!image.TryGetProperty("type", out JsonElement type) || type.ValueKind == JsonValueKind.Null)
+                    {
+                        continue;
+                    }
+                    if (!image.TryGetProperty("url", out JsonElement url) || url.ValueKind == JsonValueKind.Null)
+                    {
+                        continue;
+                    }
+                    ;
+
+                    nameResult.Images.Add((
+                        type.GetString()!,
+                        url.GetString()!
+                    ));
+                }
+                results.Add(nameResult);
+            }
+            return results;
         }
 
         public string ParseOwner(string json)
@@ -52,10 +98,6 @@ namespace FGC_Stat_Analyzer_wpf.Services
                 {
                     continue;
                 }
-                if (!node.TryGetProperty("numAttendees", out JsonElement numAttendees) || numAttendees.ValueKind == JsonValueKind.Null)
-                {
-                    continue;
-                }
 
                 // Required values so no need to null validate
                 string name = node.GetProperty("name").GetString();
@@ -65,8 +107,7 @@ namespace FGC_Stat_Analyzer_wpf.Services
                 {
                     Name = name,
                     Slug = slug,
-                    StartAt = startAt.GetInt32(),
-                    NumAttendees = numAttendees.GetInt32()
+                    StartAt = startAt.GetInt32()
                 };
 
                 JsonElement images = node.GetProperty("images");

@@ -10,6 +10,7 @@ namespace FGC_Stat_Analyzer_wpf.Services
         private readonly Analytics _analytics;
 
         public List<Parser.OwnerResult> TournamentList { get; private set; } = new();
+        public List<Parser.NameResult> LookupList { get; private set; } = new();
 
         public QueryManager()
         {
@@ -25,13 +26,29 @@ namespace FGC_Stat_Analyzer_wpf.Services
             _analytics = new Analytics();
         }
 
-        public async Task QueryTournamentOwner(string url)
+        public async Task<List<Parser.NameResult>> QueryTournamentName(string name)
+        {
+            // Construct variable dictionary
+            var nameVariables = new Dictionary<string, object?>
+            {
+                { "name", name}
+            };
+
+            // Execute query
+            GraphQLResult nameResult = await _client.ExecuteAsync(Queries.SearchTournamentsByName, nameVariables);
+
+            // Parse results
+            List<Parser.NameResult> parsedTournaments = _parser.ParseLookup(nameResult.Json!);
+
+            return parsedTournaments;
+        }
+
+        public async Task QueryTournamentOwner(string slug)
         {
             // Clear the old tournament list
             TournamentList.Clear();
 
             // construct variable dictionary
-            string slug = ExtractSlug(url);
             var ownerVariables = new Dictionary<string, object?>
             {
                 { "slug", slug}
@@ -66,43 +83,6 @@ namespace FGC_Stat_Analyzer_wpf.Services
             }
             while (page <= totalPages);
         }
-
-        private string ExtractSlug(string url)
-        {
-            // Extract tournament slug from url
-            if (!Uri.TryCreate(url, UriKind.Absolute, out var uri))
-            {
-                throw new ArgumentException("Invalid URL.", nameof(url));
-            }
-
-            const string tournamentPath = "/tournament/";
-            var path = uri.AbsolutePath;
-            var start = path.IndexOf(tournamentPath, StringComparison.OrdinalIgnoreCase);
-
-            if (start == -1)
-            {
-                throw new ArgumentException("Arguement does not appear to be a Start.gg tournament URL.", nameof(url));
-            }
-
-            start += tournamentPath.Length;
-
-            var end = path.IndexOf('/', start);
-            if (end == -1)
-            {
-                end = path.Length;
-            }
-
-            var slug = path[start..end];
-
-            // Check if there is a valid slug
-            if (string.IsNullOrWhiteSpace(slug))
-            {
-                throw new ArgumentException("Tournament URL does not contain a slug.", nameof(url));
-            }
-                
-            return slug;
-        }
-
         
         public async Task<Dictionary<string, List<Analytics.Top8Analytics>>> QueryTop8(List<Parser.OwnerResult> tournamentList, DateTime startDate, DateTime endDate)
         {

@@ -6,6 +6,7 @@ public class Queries
     public static string GetOwnerByTournamentSlug = Load("GetOwnerByTournamentSlug.graphql");
     public static string TournamentHeadCount = Load("TournamentHeadCount.graphql");
     public static string SearchTournamentsByOwner = Load("SearchTournamentsByOwner.graphql");
+    public static string SearchTournamentsByName = Load("SearchTournamentsByName.graphql");
     public static string TournamentTop8 = Load("TournamentTop8.graphql");
 
     private static string Load(string file)

@@ -134,18 +134,17 @@ namespace FGC_Stat_Analyzer_wpf.Views.UserControls
 
         private async void queryButton_Click(object sender, System.Windows.RoutedEventArgs e)
         {
+            // Disable input until query completes
             toggleInput(false);
-
-            // Clear the data on the table if there is any
-            
-
-            // TODO: start a scroller to show that the app is running the query in the foreground
+            loadingGif.Visibility = Visibility.Visible;
 
             // Fault check for no API key
             string? apiKey = _keyManager.GetKey();
             if (string.IsNullOrEmpty(apiKey))
             {
                 testLabel.Content = "Please setup API key before entering.";
+                loadingGif.Visibility = Visibility.Collapsed;
+                toggleInput(true);
                 return;
             }
 
@@ -153,6 +152,8 @@ namespace FGC_Stat_Analyzer_wpf.Views.UserControls
             if (tournamentEntered == false)
             {
                 testLabel.Content = "Please enter a URL before running query.";
+                loadingGif.Visibility = Visibility.Collapsed;
+                toggleInput(true);
                 return;
             }
             
@@ -181,11 +182,13 @@ namespace FGC_Stat_Analyzer_wpf.Views.UserControls
                 case "Top 8":
                     Dictionary<string, List<Analytics.Top8Analytics>> top8Results = await _queryManager.QueryTop8(_queryManager.TournamentList, queryStartDate, queryEndDate);
                     _resultsDataGrid?.DisplayTop8Results(top8Results);
+                    loadingGif.Visibility = Visibility.Collapsed;
                     toggleInput(true);
                     break;
                 case "Attendee Headcount":
                     Dictionary<string, List<Analytics.HeadcountAnalytics>> HeadcountResults = await _queryManager.QueryHeadcount(_queryManager.TournamentList, queryStartDate, queryEndDate);
                     _resultsDataGrid?.DisplayHeadcountResults(HeadcountResults);
+                    loadingGif.Visibility = Visibility.Collapsed;
                     toggleInput(true);
                     break;
             } 
@@ -195,7 +198,7 @@ namespace FGC_Stat_Analyzer_wpf.Views.UserControls
         {
             // Controls functionality of sidebar elements
             optionCombo.IsEnabled = isEnabled;
-            tournamentUrl.IsEnabled = isEnabled;  
+            tournamentUrl.IsEnabled = isEnabled;
             if (btnYTD.IsChecked != true)
             { 
                 startDate.IsEnabled = isEnabled;
@@ -205,7 +208,7 @@ namespace FGC_Stat_Analyzer_wpf.Views.UserControls
             queryButton.IsEnabled = isEnabled;
             testLabel.IsEnabled = isEnabled;
 
-            // Controls opacity of datagrid and sidebar
+            // Set other parameters
             if (!isEnabled)
             {
                 _resultsDataGrid?.Opacity = .5;
@@ -222,6 +225,8 @@ namespace FGC_Stat_Analyzer_wpf.Views.UserControls
 
         private async void TournamentUrl_ValueChanged(object? sender, EventArgs e)
         {
+            string tournamentValue = tournamentUrl.Value;
+
             // Check if text box is empty
             if (string.IsNullOrWhiteSpace(tournamentUrl.Value))
             {
@@ -249,32 +254,85 @@ namespace FGC_Stat_Analyzer_wpf.Views.UserControls
 
                 testLabel.Content = "Testing...";
 
-                // TODO: Determine if entered value is a URL, otherwise start search
-
-                // Run tournament query with submitted information
-                try
+                // Determine if entered value is a tournament URL, otherwise start lookup function
+                if (tournamentValue.Contains("start.gg/tournament/", StringComparison.OrdinalIgnoreCase)) 
                 {
-                    await _queryManager.QueryTournamentOwner(tournamentUrl.Value);
-                    int tournamentCount = _queryManager.TournamentList.Count;
-
-                    if (tournamentCount <= 0)
-                    {
-                        testLabel.Content = "Error: no results were found from tournament lookup.";
-                        tournamentEntered = false;
-                        return;
-                    }
-                    testLabel.Content = "Success! Found: " + tournamentCount + " Results.";
-                    tournamentEntered = true;
+                    string tournamentSlug = ExtractSlug(tournamentValue);
+                    urlSearch(tournamentSlug);
                 }
-                catch
+                else
                 {
-                    testLabel.Content = "Error: provided value is not correct.";
-                    tournamentEntered = false;
+                    lookupSearch(tournamentValue);
                 }
             }
             catch (OperationCanceledException)
             {
                 return;
+            }
+        }
+
+        private string ExtractSlug(string url)
+        {
+            // Extract tournament slug from url
+            if (!Uri.TryCreate(url, UriKind.Absolute, out var uri))
+            {
+                throw new ArgumentException("Invalid URL.", nameof(url));
+            }
+
+            const string tournamentPath = "/tournament/";
+            var path = uri.AbsolutePath;
+            var start = path.IndexOf(tournamentPath, StringComparison.OrdinalIgnoreCase);
+
+            if (start == -1)
+            {
+                throw new ArgumentException("Argument does not appear to be a Start.gg tournament URL.", nameof(url));
+            }
+
+            start += tournamentPath.Length;
+
+            var end = path.IndexOf('/', start);
+            if (end == -1)
+            {
+                end = path.Length;
+            }
+
+            var slug = path[start..end];
+
+            // Check if there is a valid slug
+            if (string.IsNullOrWhiteSpace(slug))
+            {
+                throw new ArgumentException("Tournament URL does not contain a slug.", nameof(url));
+            }
+
+            return slug;
+        }
+
+        private async void lookupSearch(string tournamentValue)
+        {
+            //List<Parser.NameResult> lookupResult = _queryManager.QueryTournamentName(tournamentValue);
+        }
+
+        private async void urlSearch(string tournamentValue)
+        {
+            // Run tournament query with submitted information
+            try
+            {
+                await _queryManager.QueryTournamentOwner(tournamentValue);
+                int tournamentCount = _queryManager.TournamentList.Count;
+
+                if (tournamentCount <= 0)
+                {
+                    testLabel.Content = "Error: no results were found from tournament lookup.";
+                    tournamentEntered = false;
+                    return;
+                }
+                testLabel.Content = "Success! Found: " + tournamentCount + " Results.";
+                tournamentEntered = true;
+            }
+            catch
+            {
+                testLabel.Content = "Error: provided value is not correct.";
+                tournamentEntered = false;
             }
         }
     }

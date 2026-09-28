@@ -11,6 +11,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="Assets\tekken-king-slap.gif" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Fonts\m39.TTF" />
     <None Remove="Fonts\PIXEARG_.TTF" />
     <None Remove="Queries\SmokeTest.graphql" />
@@ -39,9 +43,11 @@
   <ItemGroup>
     <PackageReference Include="CredentialManagement" Version="1.0.2" />
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="2.0.1" />
+    <PackageReference Include="WpfAnimatedGif" Version="2.0.2" />
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Assets\tekken-king-slap.gif" />
     <Resource Include="Fonts\m39.TTF" />
     <Resource Include="Fonts\PIXEARG_.TTF" />
   </ItemGroup>

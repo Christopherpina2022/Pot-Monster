@@ -1,0 +1,12 @@
+query SearchTournamentsByName($name: String!) {
+  tournaments(query: {filter: {name: $name}, page: 1, perpage: 10}) {
+    nodes {
+      name
+      slug
+      images {
+        type
+        url
+      }
+    }
+  }
+}
