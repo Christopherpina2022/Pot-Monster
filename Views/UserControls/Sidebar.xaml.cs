@@ -249,8 +249,7 @@ namespace FGC_Stat_Analyzer_wpf.Views.UserControls
 
             try
             {
-                // delay will be 400 ms
-                await Task.Delay(400, _searchCts.Token);
+                await Task.Delay(700, _searchCts.Token);
 
                 testLabel.Content = "Testing...";
 
@@ -309,7 +308,9 @@ namespace FGC_Stat_Analyzer_wpf.Views.UserControls
 
         private async void lookupSearch(string tournamentValue)
         {
-            //List<Parser.NameResult> lookupResult = _queryManager.QueryTournamentName(tournamentValue);
+            List<Parser.NameResult> lookupResult = await _queryManager.QueryTournamentName(tournamentValue);
+            // Populate tournament value with list then show popup
+            tournamentUrl.populatePopup(lookupResult);
         }
 
         private async void urlSearch(string tournamentValue)

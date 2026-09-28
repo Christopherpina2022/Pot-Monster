@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using FGC_Stat_Analyzer_wpf.Services;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace FGC_Stat_Analyzer_wpf.Views.UserControls
@@ -20,24 +21,28 @@ namespace FGC_Stat_Analyzer_wpf.Views.UserControls
         public System.Windows.Media.Brush PlaceholderColor
         {
             get { return placeholderColor; }
-            set {
-                placeholderColor = value;
-                tbPlaceholder.Foreground = placeholderColor;
-            }
+            set { placeholderColor = value; tbPlaceholder.Foreground = placeholderColor;}
         }
-
 
         private string placeholder = string.Empty;
 
         public string Placeholder
         {
             get { return placeholder; }
-            set { 
-                placeholder = value; 
-                tbPlaceholder.Text = placeholder;
-            }
+            set { placeholder = value; tbPlaceholder.Text = placeholder;}
         }
 
+        public void populatePopup(List<Parser.NameResult> tournamentList)
+        {
+            // Clear search before operating
+            tournamentListBox.Items.Clear();
+
+            foreach (var result in tournamentList)
+            {
+                tournamentListBox.Items.Add(result.Name);
+            }
+            searchPopup.IsOpen = true;
+        }
 
         private void btnClear_Click(object sender, RoutedEventArgs e)
         {
