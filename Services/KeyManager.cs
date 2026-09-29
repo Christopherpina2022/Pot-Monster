@@ -30,6 +30,7 @@ namespace FGC_Stat_Analyzer_wpf.Services
 
             if (credential.Load())
             {
+                // TODO: run test to confirm api key is still valid, if not notify user that key is expired
                 return credential.Password;
             } 
             else

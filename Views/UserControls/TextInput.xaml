@@ -15,7 +15,22 @@
         <!--Combo Box-->
         <Popup x:Name="searchPopup" PlacementTarget="{Binding ElementName=txtInput}" Placement="Bottom" StaysOpen="False" AllowsTransparency="True">
             <Border Background="White" BorderBrush="Gray" BorderThickness="1">
-                <ListBox x:Name="tournamentListBox" Width="auto" FontSize="20" Padding="10"/>
+                <ListBox x:Name="tournamentListBox" Width="auto" Padding="10" SelectionChanged="tournamentListBox_SelectionChanged">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <!-- Image -->
+                                <Image Source="{Binding ImageUrl}" Grid.Column="0" Width="50" Height="50" Stretch="UniformToFill" Margin="0, 0, 20, 0" />
+                                <!-- Text -->
+                                <TextBlock Text="{Binding Name}" Grid.Column="1" VerticalAlignment="Center" FontSize="20"/>
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
             </Border>
         </Popup>
         

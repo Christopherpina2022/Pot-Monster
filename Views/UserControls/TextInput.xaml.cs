@@ -1,12 +1,14 @@
 ﻿using FGC_Stat_Analyzer_wpf.Services;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media.Imaging;
 
 namespace FGC_Stat_Analyzer_wpf.Views.UserControls
 {
     public partial class TextInput : UserControl
     {
         public event EventHandler? ValueChanged;
+        public event EventHandler<string>? TournamentSelected;
         public string Value
         {
             get => txtInput.Text; set => txtInput.Text = value;
@@ -32,15 +34,9 @@ namespace FGC_Stat_Analyzer_wpf.Views.UserControls
             set { placeholder = value; tbPlaceholder.Text = placeholder;}
         }
 
-        public void populatePopup(List<Parser.NameResult> tournamentList)
+        public void populatePopup(List<Parser.NameResult> tournaments)
         {
-            // Clear search before operating
-            tournamentListBox.Items.Clear();
-
-            foreach (var result in tournamentList)
-            {
-                tournamentListBox.Items.Add(result.Name);
-            }
+            tournamentListBox.ItemsSource = tournaments;
             searchPopup.IsOpen = true;
         }
 
@@ -54,7 +50,6 @@ namespace FGC_Stat_Analyzer_wpf.Views.UserControls
         {
             if (string.IsNullOrEmpty(txtInput.Text))
             {
-                //searchPopup.IsOpen = true;
                 tbPlaceholder.Visibility = Visibility.Visible;
             }
             else
@@ -62,7 +57,21 @@ namespace FGC_Stat_Analyzer_wpf.Views.UserControls
                 tbPlaceholder.Visibility = Visibility.Collapsed;
             }
 
+            // Expose event
             ValueChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        private async void tournamentListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (tournamentListBox.SelectedItem is not Parser.NameResult tournament)
+            {
+                return;
+            }
+
+            // hide popup first then expose event
+            searchPopup.IsOpen = false;
+            TournamentSelected?.Invoke(this, tournament.Slug);
+            tournamentListBox.SelectedItem = null;
         }
     }
 }

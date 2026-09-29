@@ -13,6 +13,7 @@ namespace FGC_Stat_Analyzer_wpf.Services
             public string Name { get; set; } = "";
             public string Slug { get; set; } = "";
             public List<(string Type, string Url)> Images { get; set; } = new();
+            public string? ImageUrl => Images.FirstOrDefault(x => x.Type == "profile").Url;
         }
         public class OwnerResult
         {
@@ -20,6 +21,7 @@ namespace FGC_Stat_Analyzer_wpf.Services
             public string Slug { get; set; } = "";
             public int StartAt { get; set; }
             public List<(string Type, string Url)> Images { get; set; } = new();
+            public string? ImageUrl => Images.FirstOrDefault(x => x.Type == "banner").Url;
 
         }
 
@@ -147,6 +149,10 @@ namespace FGC_Stat_Analyzer_wpf.Services
 
             // Read through JSON
             JsonElement events = document.RootElement.GetProperty("data").GetProperty("tournament").GetProperty("events");
+            if (events.ValueKind == JsonValueKind.Null)
+            {
+                return results;
+            }
             foreach (JsonElement evt in events.EnumerateArray())
             {
                 string game = evt.GetProperty("videogame").GetProperty("name").GetString()!;
@@ -189,7 +195,10 @@ namespace FGC_Stat_Analyzer_wpf.Services
 
             // Read through JSON
             JsonElement events = document.RootElement.GetProperty("data").GetProperty("tournament").GetProperty("events");
-
+            if (events.ValueKind == JsonValueKind.Null)
+            {
+                return results;
+            }
             foreach (JsonElement evt in events.EnumerateArray())
             {
                 string game = evt.GetProperty("videogame").GetProperty("name").GetString()!;

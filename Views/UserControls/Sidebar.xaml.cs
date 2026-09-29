@@ -15,20 +15,23 @@ namespace FGC_Stat_Analyzer_wpf.Views.UserControls
         private CancellationTokenSource? _searchCts;
         public Sidebar()
         {
-            
+            // Initialize starting components
             InitializeComponent();
             _keyManager = new KeyManager();
             InitializeQueryManager();
             
-            // Event handler for when API key is changed during runtime
+            // Event subscriptions
             ApiKeyWindow.ApiKeySaved += ApiKeyWindow_ApiKeySaved;
+            tournamentUrl.TournamentSelected += TournamentUrl_TournamentSelected;
 
+            // Initialize default combobox values
             optionCombo.Items.Add("Top 8");
             optionCombo.Items.Add("Attendee Headcount");
         }
 
         private void InitializeQueryManager()
         {
+            // Start test for API key, if not found, run in landing page
             string? apiKey = _keyManager.GetKey();
 
             if (string.IsNullOrWhiteSpace(apiKey))
@@ -54,6 +57,13 @@ namespace FGC_Stat_Analyzer_wpf.Views.UserControls
         private void ApiKeyWindow_ApiKeySaved(object? sender, EventArgs e)
         {
             InitializeQueryManager();
+        }
+
+        private async void TournamentUrl_TournamentSelected(object? sender, string slug)
+        {
+            // TODO: Run tournament query and change banner to the selected object
+            slugSearch(slug);
+            // TODO: also make the date selection the week of the event start date
         }
 
         public void Initialize(ResultsDataGrid resultsDataGrid)
@@ -257,7 +267,7 @@ namespace FGC_Stat_Analyzer_wpf.Views.UserControls
                 if (tournamentValue.Contains("start.gg/tournament/", StringComparison.OrdinalIgnoreCase)) 
                 {
                     string tournamentSlug = ExtractSlug(tournamentValue);
-                    urlSearch(tournamentSlug);
+                    slugSearch(tournamentSlug);
                 }
                 else
                 {
@@ -313,7 +323,7 @@ namespace FGC_Stat_Analyzer_wpf.Views.UserControls
             tournamentUrl.populatePopup(lookupResult);
         }
 
-        private async void urlSearch(string tournamentValue)
+        private async void slugSearch(string tournamentValue)
         {
             // Run tournament query with submitted information
             try
