@@ -1,6 +1,8 @@
 ﻿using FGC_Stat_Analyzer_wpf.Services;
 using System.Collections;
+using System.Security.Policy;
 using System.Windows.Controls;
+using System.Windows.Media.Imaging;
 
 namespace FGC_Stat_Analyzer_wpf.Views.UserControls
 {
@@ -33,6 +35,16 @@ namespace FGC_Stat_Analyzer_wpf.Views.UserControls
         public ResultsDataGrid()
         {
             InitializeComponent();
+        }
+
+        public void ChangeBanner(string banner)
+        {
+            if (string.IsNullOrWhiteSpace(banner))
+            {
+                tournamentBanner.Source = null;
+                return;
+            } 
+            tournamentBanner.Source = new BitmapImage(new Uri(banner, UriKind.Absolute));
         }
 
         public void DisplayTop8Results(Dictionary<string, List<Analytics.Top8Analytics>> results)

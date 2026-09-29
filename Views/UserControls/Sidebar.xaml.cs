@@ -61,9 +61,7 @@ namespace FGC_Stat_Analyzer_wpf.Views.UserControls
 
         private async void TournamentUrl_TournamentSelected(object? sender, string slug)
         {
-            // TODO: Run tournament query and change banner to the selected object
             slugSearch(slug);
-            // TODO: also make the date selection the week of the event start date
         }
 
         public void Initialize(ResultsDataGrid resultsDataGrid)
@@ -337,6 +335,12 @@ namespace FGC_Stat_Analyzer_wpf.Views.UserControls
                     tournamentEntered = false;
                     return;
                 }
+
+                // Set banner based on first result
+                var firstTournament = _queryManager.TournamentList.FirstOrDefault();
+                _resultsDataGrid.ChangeBanner(firstTournament?.ImageUrl);
+
+                // Confirm results to frontend
                 testLabel.Content = "Success! Found: " + tournamentCount + " Results.";
                 tournamentEntered = true;
             }

@@ -12,8 +12,28 @@
             <RowDefinition Height="20*"/>
             <RowDefinition Height="80*"/>
         </Grid.RowDefinitions>
+        <!-- Upper banner-->
+        <Grid Grid.Row="0" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="30*" />
+                <ColumnDefinition Width="60*" />
+            </Grid.ColumnDefinitions>
+
+            <ComboBox x:Name="filterCombo" Width="240" Height="30" HorizontalAlignment="Left" Focusable="False" SelectionChanged="filterCombo_SelectionChanged" Margin="10"/>
+            <Image x:Name="tournamentBanner" Grid.Column ="1" Source="{Binding imageURL}" Stretch="UniformToFill" HorizontalAlignment="Right" VerticalAlignment="Center" >
+                <!-- Feathered edge at the left -->
+                <Image.OpacityMask>
+                    <LinearGradientBrush StartPoint="1,0" EndPoint="0,0">
+                        <GradientStop Color="#FFFFFFFF" Offset="0.8" />
+                        <GradientStop Color="#00000000" Offset="1.0" />
+                    </LinearGradientBrush>
+                </Image.OpacityMask>
+            </Image>
+        </Grid>
+        <!-- Upper banner -->
         
-        <ComboBox x:Name="filterCombo" Width="240" Height="30" HorizontalAlignment="Left" Focusable="False" SelectionChanged="filterCombo_SelectionChanged"/>
+        
+        <!-- Data table -->
         <DataGrid x:Name="resultsTable" Grid.Row="1" AlternatingRowBackground="BlanchedAlmond" Focusable="False" IsReadOnly="True">
             <DataGrid.CellStyle>
                 <Style TargetType="DataGridCell">
