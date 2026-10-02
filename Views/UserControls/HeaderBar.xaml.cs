@@ -7,6 +7,16 @@ namespace FGC_Stat_Analyzer_wpf.Views.UserControls
 {
     public partial class HeaderBar : UserControl
     {
+        private ResultsDataGrid? _resultsDataGrid;
+        private ExportManager? _exportManager;
+
+        public void SetResultsDataGrid(ResultsDataGrid resultsDataGrid)
+        {
+            // Makes sure that the instance being referenced in this class is the same as the active running instance in main window
+            _resultsDataGrid = resultsDataGrid;
+            _exportManager = new ExportManager();
+        }
+
         public HeaderBar()
         {
             InitializeComponent();
@@ -34,6 +44,19 @@ namespace FGC_Stat_Analyzer_wpf.Views.UserControls
             Window? window = Window.GetWindow(this);
             var oauth = new StartGgOAuthService(window);
             await oauth.AuthenticateAsync();
+        }
+
+        private void exportMenu_Click(object sender, RoutedEventArgs e)
+        {
+            if (_resultsDataGrid == null || _exportManager == null)
+            {
+                return;
+            }
+
+            var results = _resultsDataGrid.CurrentResults;
+
+            // Run exporter
+            _exportManager.ExportCSV(results, _resultsDataGrid.CurrentExportType);
         }
     }
 }

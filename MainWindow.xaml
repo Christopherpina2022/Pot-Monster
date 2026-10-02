@@ -22,7 +22,7 @@
 
         <!-- Header -->
         <Border Grid.Row="0" Background="Gray" Panel.ZIndex="-1" Grid.ColumnSpan="2"/>
-        <UserControls:HeaderBar Grid.Row="0" Grid.ColumnSpan="2"/>
+        <UserControls:HeaderBar x:Name="headerBar" Grid.Row="0" Grid.ColumnSpan="2"/>
 
         <!-- Midpoint -->
         <Border Grid.Row="1" Background="LightGray" Panel.ZIndex="-1" Grid.ColumnSpan="2"/>

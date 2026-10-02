@@ -9,6 +9,7 @@ namespace FGC_Stat_Analyzer_wpf
         {
             InitializeComponent();
             sidebar.Initialize(resultsDataGrid);
+            headerBar.SetResultsDataGrid(resultsDataGrid);
         }
     }
 }

@@ -31,6 +31,7 @@ namespace FGC_Stat_Analyzer_wpf.Views.UserControls
     public partial class ResultsDataGrid : UserControl
     {
         public Dictionary<string, IEnumerable> CurrentResults { get; private set; } = new();
+        public ExportManager.ExportType CurrentExportType { get; set; } = new();
 
         public ResultsDataGrid()
         {
@@ -49,6 +50,9 @@ namespace FGC_Stat_Analyzer_wpf.Views.UserControls
 
         public void DisplayTop8Results(Dictionary<string, List<Analytics.Top8Analytics>> results)
         {
+            CurrentResults.Clear();
+            CurrentExportType = ExportManager.ExportType.Top8;
+
             foreach (var group in results) 
             {
                 List<Top8TableRow> rows = new();
@@ -79,6 +83,9 @@ namespace FGC_Stat_Analyzer_wpf.Views.UserControls
 
         public void DisplayHeadcountResults(Dictionary<string, List<Analytics.HeadcountAnalytics>> results)
         {
+            CurrentResults.Clear();
+            CurrentExportType = ExportManager.ExportType.Headcount;
+
             foreach (var group in results)
             {
                 List<HeadcountTableRow> rows = new();
