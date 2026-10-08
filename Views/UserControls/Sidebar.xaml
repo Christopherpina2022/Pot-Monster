@@ -35,7 +35,7 @@
         
         <!--Start query-->
         <Button x:Name="queryButton" Grid.Row="6" Width="90" Height="20" Content="Search" HorizontalAlignment="Left" Margin="10, 0, 10, 0" Click="queryButton_Click" Focusable="False"/>
-        <Image x:Name="loadingGif" Grid.Row="7" Grid.Column="1" Width="500" Height="200" HorizontalAlignment="Center" VerticalAlignment="Center" gif:ImageBehavior.AnimatedSource="/Assets/tekken-king-slap.gif" Visibility="Collapsed"/>
+        <Image x:Name="loadingGif" Grid.Row="7" Grid.Column="1" Width="400" Height="200" HorizontalAlignment="Center" VerticalAlignment="Center" gif:ImageBehavior.AnimatedSource="/Assets/Loading Screen1.gif" Visibility="Collapsed"/>
         
     </Grid>
 </UserControl>

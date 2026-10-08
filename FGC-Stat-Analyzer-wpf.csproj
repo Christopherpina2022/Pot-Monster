@@ -11,7 +11,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="Assets\tekken-king-slap.gif" />
+    <Content Remove="Assets\Loading Screen1.gif" />
   </ItemGroup>
 
   <ItemGroup>
@@ -50,7 +50,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Assets\tekken-king-slap.gif" />
+    <Resource Include="Assets\Loading Screen1.gif" />
     <Resource Include="Fonts\m39.TTF" />
     <Resource Include="Fonts\PIXEARG_.TTF" />
   </ItemGroup>

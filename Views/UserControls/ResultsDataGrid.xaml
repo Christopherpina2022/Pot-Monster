@@ -12,6 +12,7 @@
             <RowDefinition Height="20*"/>
             <RowDefinition Height="80*"/>
         </Grid.RowDefinitions>
+        
         <!-- Upper banner-->
         <Grid Grid.Row="0" >
             <Grid.ColumnDefinitions>
@@ -19,7 +20,9 @@
                 <ColumnDefinition Width="60*" />
             </Grid.ColumnDefinitions>
 
+            <!-- Combobox -->
             <ComboBox x:Name="filterCombo" Width="240" Height="30" HorizontalAlignment="Left" Focusable="False" SelectionChanged="filterCombo_SelectionChanged" Margin="10"/>
+            <!-- Banner -->
             <Image x:Name="tournamentBanner" Grid.Column ="1" Source="{Binding imageURL}" Stretch="UniformToFill" HorizontalAlignment="Right" VerticalAlignment="Center" >
                 <!-- Feathered edge at the left -->
                 <Image.OpacityMask>
@@ -30,18 +33,71 @@
                 </Image.OpacityMask>
             </Image>
         </Grid>
-        <!-- Upper banner -->
-        
-        
+
         <!-- Data table -->
-        <DataGrid x:Name="resultsTable" Grid.Row="1" AlternatingRowBackground="BlanchedAlmond" Focusable="False" IsReadOnly="True">
+        <DataGrid x:Name="resultsTable" Grid.Row="1" Focusable="False" IsReadOnly="True" HorizontalGridLinesBrush="#FFE0E0E0" HeadersVisibility="Column" VerticalGridLinesBrush="Transparent" AlternationCount="2">
+            <!-- Column Header style -->
+            <DataGrid.ColumnHeaderStyle>
+                <Style TargetType="DataGridColumnHeader">
+                    
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="#f0b181"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Background" Value="#4a2203"/>
+                            <Setter Property="Foreground" Value="White"/>
+                        </Trigger>
+                    </Style.Triggers>
+                    
+                    <Setter Property="Background" Value="#e37622"/>
+                    <Setter Property="Foreground" Value="White"/>
+                    <Setter Property="FontWeight" Value="Bold"/>
+                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                    <Setter Property="VerticalContentAlignment" Value="Center"/>
+                    <Setter Property="Padding" Value="10,6" />
+                    <Setter Property="BorderBrush" Value="#FF404040"/>
+                </Style>
+                
+            </DataGrid.ColumnHeaderStyle>
+
+            <!-- Rows -->
+            <DataGrid.RowStyle>
+                <Style TargetType="DataGridRow">
+
+                    <Setter Property="Background" Value="White"/>
+                    <Setter Property="Foreground" Value="#FF202020"/>
+
+                    <Style.Triggers>
+                        <!-- Alternating rows -->
+                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=(ItemsControl.AlternationIndex)}" Value="1">
+                            <Setter Property="Background" Value="#f7e6d5"/>
+                        </DataTrigger>
+
+                        <!-- Mouse hover -->
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="#f0b181"/>
+                        </Trigger>
+
+                        <!-- Selected row -->
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Background" Value="#4a2203"/>
+                            <Setter Property="Foreground" Value="White"/>
+                        </Trigger>
+
+                    </Style.Triggers>
+
+                </Style>
+            </DataGrid.RowStyle>
+            
+            <!-- Cell style -->
             <DataGrid.CellStyle>
                 <Style TargetType="DataGridCell">
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="DataGridCell">
-                                <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}">
-                                    <ContentPresenter Margin="0,4" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                                <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                                    <ContentPresenter Margin="3,5" VerticalAlignment="Center" HorizontalAlignment="Left"/>
                                 </Border>
                             </ControlTemplate>
                         </Setter.Value>
