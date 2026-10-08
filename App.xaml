@@ -4,7 +4,12 @@
              xmlns:local="clr-namespace:FGC_Stat_Analyzer_wpf"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-        <FontFamily x:Key="AppFont">/Fonts/#M39_SQUAREFUTURE</FontFamily>
-        <FontFamily x:Key="PixArial">/Fonts/#Pixel Arial 11</FontFamily>
+        <ResourceDictionary>
+            <FontFamily x:Key="AppFont">/Fonts/#M39_SQUAREFUTURE</FontFamily>
+            <FontFamily x:Key="PixArial">/Fonts/#Pixel Arial 11</FontFamily>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Styles/ComboBoxDictionary.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

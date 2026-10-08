@@ -22,7 +22,8 @@
         </Grid.RowDefinitions>
         
         <!-- Type of query -->
-        <ComboBox x:Name="optionCombo" Text="Placeholder" Margin="5" Padding="5" VerticalAlignment="Center" HorizontalAlignment="Left" ItemsSource="{Binding optionCombo}" SelectedIndex="0" Focusable="False"/>
+        <ComboBox x:Name="optionCombo" Text="Placeholder" Margin="5" Padding="5" VerticalAlignment="Center" HorizontalAlignment="Left" 
+                  ItemsSource="{Binding optionCombo}" SelectedIndex="0" Focusable="False" Style="{StaticResource ComboBoxStyle}"/>
 
         <!-- Main user input-->
         <UserControls:TextInput x:Name="tournamentUrl" Grid.Row="1" Margin="5" Placeholder="Enter event name or paste Start.gg URL..."/>
@@ -31,11 +32,13 @@
         <!-- Date form stuff -->
         <UserControls:DateSelection x:Name="startDate" Grid.Row="3" Label="Start Date:" HorizontalAlignment="Left" ValueChanged="startDate_ValueChanged" VerticalContentAlignment="Center"/>
         <UserControls:DateSelection x:Name="endDate" Grid.Row="4" Label="End Date:" HorizontalAlignment="Left" ValueChanged="endDate_ValueChanged" VerticalContentAlignment="Center"/>
-        <CheckBox x:Name="btnYTD" Grid.Row= "5" FontSize="15" Content="Year To Date" VerticalContentAlignment="Center" HorizontalAlignment="Left" Checked="btnYTD_Checked" Unchecked="btnYTD_Unchecked" Focusable="False" Margin="10,0,10,0"/>
+        <CheckBox x:Name="btnYTD" Grid.Row= "5" FontSize="15" Content="Year To Date" VerticalContentAlignment="Center" HorizontalAlignment="Left" Checked="btnYTD_Checked" 
+                  Unchecked="btnYTD_Unchecked" Focusable="False" Margin="10,0,10,0"/>
         
         <!--Start query-->
         <Button x:Name="queryButton" Grid.Row="6" Width="90" Height="20" Content="Search" HorizontalAlignment="Left" Margin="10, 0, 10, 0" Click="queryButton_Click" Focusable="False"/>
-        <Image x:Name="loadingGif" Grid.Row="7" Grid.Column="1" Width="400" Height="200" HorizontalAlignment="Center" VerticalAlignment="Center" gif:ImageBehavior.AnimatedSource="/Assets/Loading Screen1.gif" Visibility="Collapsed"/>
+        <Image x:Name="loadingGif" Grid.Row="7" Grid.Column="1" Width="400" Height="200" HorizontalAlignment="Center" VerticalAlignment="Center" 
+               gif:ImageBehavior.AnimatedSource="/Assets/Loading Screen1.gif" Visibility="Collapsed"/>
         
     </Grid>
 </UserControl>

@@ -21,7 +21,8 @@
             </Grid.ColumnDefinitions>
 
             <!-- Combobox -->
-            <ComboBox x:Name="filterCombo" Width="240" Height="30" HorizontalAlignment="Left" Focusable="False" SelectionChanged="filterCombo_SelectionChanged" Margin="10"/>
+            <ComboBox x:Name="filterCombo" Width="240" Height="30" Padding="10,0" Focusable="False" Style="{StaticResource ComboBoxStyle}" />
+
             <!-- Banner -->
             <Image x:Name="tournamentBanner" Grid.Column ="1" Source="{Binding imageURL}" Stretch="UniformToFill" HorizontalAlignment="Right" VerticalAlignment="Center" >
                 <!-- Feathered edge at the left -->
@@ -35,7 +36,8 @@
         </Grid>
 
         <!-- Data table -->
-        <DataGrid x:Name="resultsTable" Grid.Row="1" Focusable="False" IsReadOnly="True" HorizontalGridLinesBrush="#FFE0E0E0" HeadersVisibility="Column" VerticalGridLinesBrush="Transparent" AlternationCount="2">
+        <DataGrid x:Name="resultsTable" Grid.Row="1" Focusable="False" IsReadOnly="True" HorizontalGridLinesBrush="#FFE0E0E0" HeadersVisibility="Column" VerticalGridLinesBrush="Transparent" 
+                  AlternationCount="2">
             <!-- Column Header style -->
             <DataGrid.ColumnHeaderStyle>
                 <Style TargetType="DataGridColumnHeader">
