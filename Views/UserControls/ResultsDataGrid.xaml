@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              >
-    <Grid Background="White">
+    <Grid Background="#fffee3">
         <Grid.RowDefinitions>
             <RowDefinition Height="20*"/>
             <RowDefinition Height="80*"/>
@@ -21,7 +21,7 @@
             </Grid.ColumnDefinitions>
 
             <!-- Combobox -->
-            <ComboBox x:Name="filterCombo" Width="240" Height="30" Padding="10,0" Focusable="False" Style="{StaticResource ComboBoxStyle}" />
+            <ComboBox x:Name="filterCombo" Width="240" Height="30" Padding="10,0" Focusable="False" Style="{StaticResource ComboBoxStyle}" SelectionChanged="filterCombo_SelectionChanged"/>
 
             <!-- Banner -->
             <Image x:Name="tournamentBanner" Grid.Column ="1" Source="{Binding imageURL}" Stretch="UniformToFill" HorizontalAlignment="Right" VerticalAlignment="Center" >
