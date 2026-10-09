@@ -8,6 +8,8 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
 	<WindowsPackageType>None</WindowsPackageType>
+	<Platforms>AnyCPU;x64</Platforms>
+	 <EnableMsixTooling>true</EnableMsixTooling>
   </PropertyGroup>
 
   <ItemGroup>
