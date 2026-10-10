@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Fonts\FiraCode-VariableFont_wght.ttf" />
     <None Remove="Fonts\m39.TTF" />
     <None Remove="Fonts\PIXEARG_.TTF" />
     <None Remove="Queries\SmokeTest.graphql" />
@@ -53,6 +54,7 @@
 
   <ItemGroup>
     <Resource Include="Assets\Loading Screen1.gif" />
+    <Resource Include="Fonts\FiraCode-VariableFont_wght.ttf" />
     <Resource Include="Fonts\m39.TTF" />
     <Resource Include="Fonts\PIXEARG_.TTF" />
   </ItemGroup>

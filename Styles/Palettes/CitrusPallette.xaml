@@ -1,0 +1,20 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <!-- Main Window items -->
+    <SolidColorBrush x:Key="HeaderBrush" Color="#fab82a" />
+    <SolidColorBrush x:Key="SidebarBrush" Color="#fce4b1"/>
+    <SolidColorBrush x:Key="BannerBrush" Color="#fffee3"/>
+    <!-- DataGrid Headers -->
+    <SolidColorBrush x:Key="DataHeaderDefaultBrush" Color="#e37622"/>
+    <SolidColorBrush x:Key="DataHeaderForegroundBrush" Color="White"/>
+    <SolidColorBrush x:Key="DataHeaderBorderBrush" Color="#FF404040"/>
+    <SolidColorBrush x:Key="DataHeaderHoverBrush" Color="#f0b181"/>
+    <!-- DataTable Clicked Brushes -->
+    <SolidColorBrush x:Key="DataTableClickedBrush" Color="#4a2203"/>
+    <SolidColorBrush x:Key="DataTableClickedForegroundBrush" Color="White"/>
+    <!-- DataGrid Rows -->
+    <SolidColorBrush x:Key="DataRowDefaultBrush" Color="White"/>
+    <SolidColorBrush x:Key="DataRowForegroundBrush" Color="Black"/>
+    <SolidColorBrush x:Key="DataRowAlternatingBrush" Color="#f7e6d5"/>
+    <SolidColorBrush x:Key="DataRowHoverBrush" Color="#f0b181"/>
+</ResourceDictionary>

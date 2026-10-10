@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              >
-    <Grid Background="#fffee3">
+    <Grid Background="{DynamicResource BannerBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="20*"/>
             <RowDefinition Height="80*"/>
@@ -17,12 +17,31 @@
         <Grid Grid.Row="0" >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="30*" />
-                <ColumnDefinition Width="60*" />
+                <ColumnDefinition Width="auto" />
             </Grid.ColumnDefinitions>
 
-            <!-- Combobox -->
-            <ComboBox x:Name="filterCombo" Width="240" Height="30" Padding="10,0" Focusable="False" Style="{StaticResource ComboBoxStyle}" SelectionChanged="filterCombo_SelectionChanged"/>
+            <!-- Filters -->
+            <GroupBox Grid.Column="0" Padding="10" Margin="10">
+                <GroupBox.Header>
+                    <Label>Data Filters and Exporting</Label>
+                </GroupBox.Header>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="10*"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+                    
+                    <!-- Game Category filter -->
+                    <Label Grid.Row="0" FontSize="15">Videogame Category</Label>
+                    <ComboBox x:Name="filterCombo" Grid.Row="1" Focusable="False" SelectionChanged="filterCombo_SelectionChanged"/>
 
+                    <!-- Export Button -->
+                    <Button x:Name="exportButton" Height="30" Width="150" Grid.Row="3" HorizontalAlignment="Right" IsEnabled="False" Margin="10" Content="Export as..." />
+                </Grid>
+            </GroupBox>
+            
             <!-- Banner -->
             <Image x:Name="tournamentBanner" Grid.Column ="1" Source="{Binding imageURL}" Stretch="UniformToFill" HorizontalAlignment="Right" VerticalAlignment="Center" >
                 <!-- Feathered edge at the left -->
@@ -40,71 +59,17 @@
                   AlternationCount="2">
             <!-- Column Header style -->
             <DataGrid.ColumnHeaderStyle>
-                <Style TargetType="DataGridColumnHeader">
-                    
-                    <Style.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" Value="#f0b181"/>
-                        </Trigger>
-                        <Trigger Property="IsPressed" Value="True">
-                            <Setter Property="Background" Value="#4a2203"/>
-                            <Setter Property="Foreground" Value="White"/>
-                        </Trigger>
-                    </Style.Triggers>
-                    
-                    <Setter Property="Background" Value="#e37622"/>
-                    <Setter Property="Foreground" Value="White"/>
-                    <Setter Property="FontWeight" Value="Bold"/>
-                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
-                    <Setter Property="VerticalContentAlignment" Value="Center"/>
-                    <Setter Property="Padding" Value="10,6" />
-                    <Setter Property="BorderBrush" Value="#FF404040"/>
-                </Style>
-                
+                <StaticResource ResourceKey="ResultsTableHeaderStyle"/>
             </DataGrid.ColumnHeaderStyle>
 
             <!-- Rows -->
             <DataGrid.RowStyle>
-                <Style TargetType="DataGridRow">
-
-                    <Setter Property="Background" Value="White"/>
-                    <Setter Property="Foreground" Value="#FF202020"/>
-
-                    <Style.Triggers>
-                        <!-- Alternating rows -->
-                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=(ItemsControl.AlternationIndex)}" Value="1">
-                            <Setter Property="Background" Value="#f7e6d5"/>
-                        </DataTrigger>
-
-                        <!-- Mouse hover -->
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" Value="#f0b181"/>
-                        </Trigger>
-
-                        <!-- Selected row -->
-                        <Trigger Property="IsSelected" Value="True">
-                            <Setter Property="Background" Value="#4a2203"/>
-                            <Setter Property="Foreground" Value="White"/>
-                        </Trigger>
-
-                    </Style.Triggers>
-
-                </Style>
+                <StaticResource ResourceKey="ResultsTableRowStyle"/>
             </DataGrid.RowStyle>
-            
+
             <!-- Cell style -->
             <DataGrid.CellStyle>
-                <Style TargetType="DataGridCell">
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="DataGridCell">
-                                <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
-                                    <ContentPresenter Margin="3,5" VerticalAlignment="Center" HorizontalAlignment="Left"/>
-                                </Border>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
+                <StaticResource ResourceKey="ResultsTableCellStyle"/>
             </DataGrid.CellStyle>
         </DataGrid>
     </Grid>

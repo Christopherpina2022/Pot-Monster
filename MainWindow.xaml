@@ -7,7 +7,7 @@
         xmlns:UserControls="clr-namespace:FGC_Stat_Analyzer_wpf.Views.UserControls"
         mc:Ignorable="d"
         Title="Pot Monster" Height="1000" Width="1500"
-        FontFamily="{StaticResource PixArial}"
+        FontFamily="{StaticResource FiraCode}"
         WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.RowDefinitions>
@@ -21,16 +21,16 @@
         </Grid.ColumnDefinitions>
 
         <!-- Header -->
-        <Border Grid.Row="0" Background="#fab82a" Panel.ZIndex="-1" Grid.ColumnSpan="2"/>
+        <Border Grid.Row="0" Background="{DynamicResource HeaderBrush}" Panel.ZIndex="-1" Grid.ColumnSpan="2"/>
         <UserControls:HeaderBar x:Name="headerBar" Grid.Row="0" Grid.ColumnSpan="2"/>
 
         <!-- Midpoint -->
         <Border Grid.Row="1" Panel.ZIndex="-1" Grid.ColumnSpan="2"/>
-        <UserControls:Sidebar x:Name="sidebar" Grid.Row="1" Background="#fce4b1"/>
+        <UserControls:Sidebar x:Name="sidebar" Grid.Row="1" Background="{DynamicResource SidebarBrush}"/>
         <UserControls:ResultsDataGrid x:Name="resultsDataGrid" Grid.Row="1" Grid.Column="1" />
 
         <!-- Footer -->
-        <Border Grid.Row="2" Background="#fab82a" Grid.ColumnSpan="2"/>
+        <Border Grid.Row="2" Background="{DynamicResource HeaderBrush}" Grid.ColumnSpan="2"/>
     </Grid>
 
 </Window>
