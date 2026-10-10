@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:FGC_Stat_Analyzer_wpf.Views.ChildWindows"
         mc:Ignorable="d"
         Title="Setup API Key" Height="175" Width="450"
-        FontFamily="{StaticResource PixArial}"
+        FontFamily="{StaticResource FiraCode}"
         WindowStartupLocation="CenterScreen">
     <Grid Margin="15">
         <Grid.RowDefinitions>

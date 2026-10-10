@@ -13,6 +13,7 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
             <RowDefinition Height="40*"/>
         </Grid.RowDefinitions>
         
@@ -59,8 +60,15 @@
         <!-- Start query-->
         <Button x:Name="queryButton" Grid.Row="2" Width="90" Height="20" Content="Search" HorizontalAlignment="Left" Margin="10, 0, 10, 0" Click="queryButton_Click" Focusable="False"/>
         
+        <!-- TEMP: palette picker -->
+        <Label Grid.Row="3" HorizontalAlignment="Left" VerticalContentAlignment="Center">TEMP: Color Palette Picker</Label>
+        <ComboBox x:Name="tempColorPicker" Grid.Row="3" Width="200" HorizontalAlignment="Right" VerticalContentAlignment="Center" SelectionChanged="tempColorPicker_SelectionChanged">
+            <ComboBoxItem Content="Citrus" IsSelected="True" />
+            <ComboBoxItem Content="Pastel" />
+        </ComboBox>
+
         <!-- Loading scroller -->
-        <Image x:Name="loadingGif" Grid.Row="7" Grid.Column="1" Width="400" Height="200" HorizontalAlignment="Center" VerticalAlignment="Center" 
+        <Image x:Name="loadingGif" Grid.Row="4" Grid.Column="1" Width="400" Height="200" HorizontalAlignment="Center" VerticalAlignment="Center" 
                gif:ImageBehavior.AnimatedSource="/Assets/Loading Screen1.gif" Visibility="Collapsed"/>
         
     </Grid>

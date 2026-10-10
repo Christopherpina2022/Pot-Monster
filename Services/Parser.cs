@@ -170,8 +170,18 @@ namespace FGC_Stat_Analyzer_wpf.Services
                         {
                             continue;
                         }
-                    
-                        string gamerTag = player.GetProperty("prefix").GetString() + " " + player.GetProperty("gamerTag").GetString();
+                        string gamerTag;
+
+                        // Do not append prefix if value is null
+                        if (string.IsNullOrWhiteSpace(player.GetProperty("prefix").GetString()))
+                        {
+                            gamerTag = player.GetProperty("gamerTag").GetString();
+                        }
+                        else
+                        {
+                            gamerTag = "[" + player.GetProperty("prefix").GetString() + "] " + player.GetProperty("gamerTag").GetString();
+                        }
+
                         int placement = standing.GetProperty("placement").GetInt32();
 
                         results.Add(new Top8Result
@@ -214,9 +224,17 @@ namespace FGC_Stat_Analyzer_wpf.Services
                             continue;
                         }
 
-                        string prefix = participant.GetProperty("prefix").GetString() ?? "";
-                        string gamerTagValue = participant.GetProperty("gamerTag").GetString() ?? "Unknown";
-                        string gamerTag = $"{prefix} {gamerTagValue}".Trim();
+                        string gamerTag;
+
+                        // Do not append prefix if value is null
+                        if (string.IsNullOrWhiteSpace(participant.GetProperty("prefix").GetString()))
+                        {
+                            gamerTag = participant.GetProperty("gamerTag").GetString();
+                        }
+                        else
+                        {
+                            gamerTag = "[" + participant.GetProperty("prefix").GetString() + "] " + participant.GetProperty("gamerTag").GetString();
+                        }
 
                         string pronouns = participant.GetProperty("user").GetProperty("genderPronoun").GetString() ?? "";
                         string birthday = participant.GetProperty("user").GetProperty("birthday").GetString() ?? "N/A";

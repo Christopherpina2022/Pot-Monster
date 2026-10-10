@@ -1,6 +1,7 @@
 ﻿using Accessibility;
 using FGC_Stat_Analyzer_wpf.Services;
 using FGC_Stat_Analyzer_wpf.Views.ChildWindows;
+using System.Drawing.Imaging;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -348,6 +349,15 @@ namespace FGC_Stat_Analyzer_wpf.Views.UserControls
             {
                 testLabel.Content = "Error: provided value is not correct.";
                 tournamentEntered = false;
+            }
+        }
+
+        private void tempColorPicker_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            // TEMP function, will be replaced by a manager later
+            if (tempColorPicker.SelectedItem is ComboBoxItem item)
+            {
+                ColorPaletteManager.ApplyPalette(item.Content?.ToString() ?? "");
             }
         }
     }
