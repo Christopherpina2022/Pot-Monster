@@ -1,6 +1,7 @@
 ﻿using FGC_Stat_Analyzer_wpf.Services;
 using System.Collections;
-using System.Security.Policy;
+using System.Windows;
+using System.Windows.Data;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 
@@ -132,6 +133,15 @@ namespace FGC_Stat_Analyzer_wpf.Views.UserControls
             if (filterCombo.SelectedItem is string game && CurrentResults.TryGetValue(game, out var data))
             {
                 resultsTable.ItemsSource = data;
+            }
+        }
+
+        private void resultsTable_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
+        {
+            // Setup alignment if value in table is numeric
+            if (e.PropertyType == typeof(int) && e.Column is DataGridTextColumn textColumn)
+            {
+                textColumn.ElementStyle = (Style)FindResource("NumericCellStyle");
             }
         }
     }

@@ -11,7 +11,8 @@ namespace FGC_Stat_Analyzer_wpf.Services
         private static readonly Dictionary<string, Uri> Palettes = new()
         {
             ["Citrus"] = new Uri("/Styles/Palettes/CitrusPalette.xaml", UriKind.Relative),
-            ["Pastel"] = new Uri("/Styles/Palettes/PastelPalette.xaml", UriKind.Relative)
+            ["Pastel"] = new Uri("/Styles/Palettes/PastelPalette.xaml", UriKind.Relative),
+            ["RCT"] = new Uri("/Styles/Palettes/RCTPalette.xaml", UriKind.Relative)
         };
 
         public static void ApplyPalette(string paletteName)

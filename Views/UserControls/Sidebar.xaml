@@ -65,6 +65,7 @@
         <ComboBox x:Name="tempColorPicker" Grid.Row="3" Width="200" HorizontalAlignment="Right" VerticalContentAlignment="Center" SelectionChanged="tempColorPicker_SelectionChanged">
             <ComboBoxItem Content="Citrus" IsSelected="True" />
             <ComboBoxItem Content="Pastel" />
+            <ComboBoxItem Content="RCT" />
         </ComboBox>
 
         <!-- Loading scroller -->

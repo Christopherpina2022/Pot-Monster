@@ -54,10 +54,16 @@
             <Setter.Value>
                 <ControlTemplate TargetType="DataGridCell">
                     <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
-                        <ContentPresenter Margin="3,5" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                        <ContentPresenter Margin="3,5" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
                     </Border>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+    </Style>
+    
+    <!-- Numeric Cell override -->
+    <Style x:Key="NumericCellStyle" TargetType="{x:Type TextBlock}">
+        <Setter Property="TextAlignment" Value="Right"/>
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
     </Style>
 </ResourceDictionary>

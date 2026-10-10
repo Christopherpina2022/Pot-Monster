@@ -55,7 +55,7 @@
         </Grid>
 
         <!-- Data table -->
-        <DataGrid x:Name="resultsTable" Grid.Row="1" Focusable="False" IsReadOnly="True" HorizontalGridLinesBrush="#FFE0E0E0" HeadersVisibility="Column" VerticalGridLinesBrush="Transparent" 
+        <DataGrid x:Name="resultsTable" Grid.Row="1" Focusable="False" IsReadOnly="True" AutoGeneratingColumn="resultsTable_AutoGeneratingColumn" HorizontalGridLinesBrush="#FFE0E0E0" HeadersVisibility="Column" VerticalGridLinesBrush="Transparent" 
                   AlternationCount="2">
             <!-- Column Header style -->
             <DataGrid.ColumnHeaderStyle>
