@@ -21,7 +21,7 @@
             </Grid.ColumnDefinitions>
 
             <!-- Filters -->
-            <GroupBox Grid.Column="0" Padding="10" Margin="10">
+            <GroupBox Grid.Column="0" Padding="10" Margin="10" BorderBrush="Black">
                 <GroupBox.Header>
                     <Label>Data Filters and Exporting</Label>
                 </GroupBox.Header>
@@ -35,10 +35,10 @@
                     
                     <!-- Game Category filter -->
                     <Label Grid.Row="0" FontSize="15">Videogame Category</Label>
-                    <ComboBox x:Name="filterCombo" Grid.Row="1" Focusable="False" SelectionChanged="filterCombo_SelectionChanged"/>
+                    <ComboBox x:Name="filterCombo" Grid.Row="1" Focusable="False" HorizontalAlignment="Left" Padding="10,5" SelectionChanged="filterCombo_SelectionChanged"/>
 
                     <!-- Export Button -->
-                    <Button x:Name="exportButton" Height="30" Width="150" Grid.Row="3" HorizontalAlignment="Right" IsEnabled="False" Margin="10" Content="Export as..." />
+                    <Button x:Name="exportButton" Height="30" Width="150" Grid.Row="3" HorizontalAlignment="Right" IsEnabled="False" Click="exportButton_Click" Margin="10" Content="Export as..." />
                 </Grid>
             </GroupBox>
             

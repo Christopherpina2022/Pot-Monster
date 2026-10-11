@@ -12,7 +12,8 @@ namespace FGC_Stat_Analyzer_wpf.Services
         {
             ["Citrus"] = new Uri("/Styles/Palettes/CitrusPalette.xaml", UriKind.Relative),
             ["Pastel"] = new Uri("/Styles/Palettes/PastelPalette.xaml", UriKind.Relative),
-            ["RCT"] = new Uri("/Styles/Palettes/RCTPalette.xaml", UriKind.Relative)
+            ["RCT"] = new Uri("/Styles/Palettes/RCTPalette.xaml", UriKind.Relative),
+            ["GF13-049NM"] = new Uri("/Styles/Palettes/TequilaPalette.xaml", UriKind.Relative)
         };
 
         public static void ApplyPalette(string paletteName)

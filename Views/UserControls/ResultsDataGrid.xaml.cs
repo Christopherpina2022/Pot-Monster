@@ -28,15 +28,19 @@ namespace FGC_Stat_Analyzer_wpf.Views.UserControls
         public string Pronouns { get; set; } = "";
         public string Birthday { get; set; } = "";
     }
-
+    
     public partial class ResultsDataGrid : UserControl
     {
+        private readonly ExportManager _exportManager;
         public Dictionary<string, IEnumerable> CurrentResults { get; private set; } = new();
         public ExportManager.ExportType CurrentExportType { get; set; } = new();
 
         public ResultsDataGrid()
         {
             InitializeComponent();
+
+            _exportManager = new ExportManager();
+            _exportManager.SetResultsDataGrid(this);
         }
 
         public void ChangeBanner(string banner)
@@ -80,6 +84,7 @@ namespace FGC_Stat_Analyzer_wpf.Views.UserControls
             }
 
             setupTable();
+            exportButton.IsEnabled = true;
         }
 
         public void DisplayHeadcountResults(Dictionary<string, List<Analytics.HeadcountAnalytics>> results)
@@ -107,6 +112,7 @@ namespace FGC_Stat_Analyzer_wpf.Views.UserControls
             }
 
             setupTable();
+            exportButton.IsEnabled = true;
         }
 
         public void setupTable()
@@ -142,6 +148,15 @@ namespace FGC_Stat_Analyzer_wpf.Views.UserControls
             if (e.PropertyType == typeof(int) && e.Column is DataGridTextColumn textColumn)
             {
                 textColumn.ElementStyle = (Style)FindResource("NumericCellStyle");
+            }
+        }
+
+        private void exportButton_Click(object sender, RoutedEventArgs e)
+        {
+            // Run exporter
+            if (_exportManager != null)
+            {
+                _exportManager.ExportCSV();
             }
         }
     }

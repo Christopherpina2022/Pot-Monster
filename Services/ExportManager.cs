@@ -8,14 +8,31 @@ namespace FGC_Stat_Analyzer_wpf.Services
 {
     public class ExportManager
     {
+        private ResultsDataGrid? _resultsDataGrid;
+
         public enum ExportType
         {
             Top8,
             Headcount
         }
 
-        public void ExportCSV(Dictionary<string, System.Collections.IEnumerable> results, ExportType type)
+        public void SetResultsDataGrid(ResultsDataGrid resultsDataGrid)
         {
+            // Makes sure that the instance being referenced in this class is the same as the active running instance in main window
+            _resultsDataGrid = resultsDataGrid;
+        }
+
+        //public void ExportCSV(Dictionary<string, System.Collections.IEnumerable> results, ExportType type)
+        public void ExportCSV()
+        {
+            if (_resultsDataGrid == null)
+            {
+                return;
+            }
+
+            var results = _resultsDataGrid.CurrentResults;
+            ExportType exportType = _resultsDataGrid.CurrentExportType;
+
             StringBuilder csv = new();
             foreach (var item in results) 
             {
@@ -26,7 +43,7 @@ namespace FGC_Stat_Analyzer_wpf.Services
                 csv.AppendLine(game);
 
                 // Append Headers
-                switch (type)
+                switch (exportType)
                 {
                     case ExportType.Top8:
                         csv.AppendLine("GamerTag,Top8Count,First,Second,Third,Fourth,Fifth,Sixth,Seventh,Eighth");
@@ -39,7 +56,7 @@ namespace FGC_Stat_Analyzer_wpf.Services
                 // Append data
                 foreach (var row in rows)
                 {
-                    switch (type)
+                    switch (exportType)
                     {
                         case ExportType.Top8 when row is Top8TableRow top8:
                             csv.AppendLine($"{escapeCSV(top8.GamerTag)},{top8.Top8Count},{top8.First},{top8.Second},{top8.Third},{top8.Fourth},{top8.Fifth},{top8.Sixth},{top8.Seventh},{top8.Eighth}");

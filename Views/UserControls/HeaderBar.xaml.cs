@@ -45,18 +45,5 @@ namespace FGC_Stat_Analyzer_wpf.Views.UserControls
             var oauth = new StartGgOAuthService(window);
             await oauth.AuthenticateAsync();
         }
-
-        private void exportMenu_Click(object sender, RoutedEventArgs e)
-        {
-            if (_resultsDataGrid == null || _exportManager == null)
-            {
-                return;
-            }
-
-            var results = _resultsDataGrid.CurrentResults;
-
-            // Run exporter
-            _exportManager.ExportCSV(results, _resultsDataGrid.CurrentExportType);
-        }
     }
 }

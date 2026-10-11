@@ -10,5 +10,4 @@ namespace FGC_Stat_Analyzer_wpf
     public partial class App : Application
     {
     }
-
 }

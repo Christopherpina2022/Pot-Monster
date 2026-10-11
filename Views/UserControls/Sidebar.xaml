@@ -40,7 +40,7 @@
         </GroupBox>
 
         <!-- Date form -->
-        <GroupBox Grid.Row="1" BorderThickness="1" Padding="10" Margin="10">
+        <GroupBox Grid.Row="1" BorderThickness="1" Padding="10" Margin="10" BorderBrush="Black">
             <GroupBox.Header>
                 <Label>Date Filters</Label>
             </GroupBox.Header>
@@ -66,6 +66,7 @@
             <ComboBoxItem Content="Citrus" IsSelected="True" />
             <ComboBoxItem Content="Pastel" />
             <ComboBoxItem Content="RCT" />
+            <ComboBoxItem Content="GF13-049NM" />
         </ComboBox>
 
         <!-- Loading scroller -->
